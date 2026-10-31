@@ -6,6 +6,10 @@ de Prática (GCP) e fazer a análise multidimensional (radar, linhas em degraus 
 
 Tudo roda no seu computador, dentro do navegador. Nenhum vídeo, áudio ou dado sai da sua máquina.
 
+> **Versão beta (0.9).** Usado e testado no Windows. A compatibilidade com o macOS já está preparada,
+> mas ainda não foi testada num Mac real. Se você usar no Mac, relatos de problemas são bem-vindos
+> na aba **Issues**.
+
 *English summary at the end.*
 
 ---
@@ -129,3 +133,4 @@ and multidimensional analysis (radar plots, step plots, practice types). Nothing
 To run it, install Python 3, download the release `.zip`, and open `iniciar.bat` (Windows) or
 `iniciar.command` (macOS; right-click > Open the first time). Chrome or Edge recommended.
 The interface is currently in Portuguese. Code license: 0BSD.
+This is a beta (0.9): tested on Windows; macOS support is prepared but not yet tested on a real Mac.

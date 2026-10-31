@@ -6,7 +6,7 @@ authors:
   - name: "Praxis Project"
 license: 0BSD
 repository-code: "https://github.com/praxisapp227-sys/praxis"
-version: "1.0.0"
+version: "0.9.0"
 keywords:
   - prática musical
   - análise de comportamento
