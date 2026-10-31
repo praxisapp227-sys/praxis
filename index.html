@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Praxis: Análise de Prática</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css?v=800346b716">
+  <link rel="stylesheet" href="css/grafia.css?v=feed280115">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ TRILHO ============ -->
+  <nav class="rail glass">
+    <div class="brand" title="Praxis">
+      <svg class="mark" width="26" height="18" viewBox="0 0 30 20" aria-label="Praxis" fill="currentColor"><rect x="0" y="0" width="3.6" height="20" rx="1.2"/><rect x="6.6" y="0" width="3.6" height="12" rx="1.2"/><rect x="13.2" y="0" width="3.6" height="20" rx="1.2"/><rect x="19.8" y="0" width="3.6" height="12" rx="1.2"/><rect x="26.4" y="0" width="3.6" height="20" rx="1.2"/></svg>
+    </div>
+    <button class="tab rail-btn active" data-view="segmentar" title="Segmentar">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 9h2M14 9h2M6 4.5v9M9 2v14M12 6v6"/></svg><span>Segmentar</span>
+    </button>
+    <button class="tab rail-btn" data-view="transcricao" title="Transcrever">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 4.5h12M3 9h12M3 13.5h8"/></svg><span>Transcrever</span>
+    </button>
+    <button class="tab rail-btn" data-view="gcp" title="Gráfico">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 15.5V2.5M2.5 15.5h13M5.5 12.5h6M5.5 8.5h9M5.5 4.8h4"/></svg><span>Gráfico</span>
+    </button>
+    <button class="tab rail-btn" data-view="multidim" title="Multidimensional">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9L9 2M9 9L15.7 6.8M9 9L13.1 14.7M9 9L4.9 14.7M9 9L2.3 6.8" stroke-width="1" opacity=".55"/><polygon points="9,2.7 13,7.7 12.1,13.3 6.5,12.4 4.3,7.5" fill="currentColor" fill-opacity=".16"/></svg><span>Multidim.</span>
+    </button>
+    <div style="flex:1"></div>
+    <button class="icon-btn" id="theme-toggle" title="Alternar tema">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6" stroke-width="1.7"/><path d="M9 3a6 6 0 010 12z" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button class="icon-btn" id="settings-btn" title="Configurações">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <button class="icon-btn" id="proj-save" title="Salvar projeto">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M3 3h9l3 3v9H3z"/><path d="M6 3v4h6V3M6 15v-4h6v4"/></svg>
+    </button>
+    <button class="icon-btn" id="proj-open" title="Abrir projeto">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M2 14V4h4.5l1.5 2H16v8z"/></svg>
+    </button>
+    <input type="file" id="proj-file" accept=".praxis" hidden>
+    <div id="proj-lastsaved" class="rail-lastsaved" title="Último salvamento do projeto"></div>
+  </nav>
+
+  <!-- ============ HUD (player flutuante, só nas abas sem timeline própria) ============ -->
+  <div class="hud" id="hud-transport" style="display:none">
+    <div class="hud-capsule glass transport">
+      <button class="btn secondary" id="hud-play" title="Reproduzir ou pausar (Espaço)"><svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor"><polygon points="4,2 15,9 4,16"/></svg></button>
+      <button class="icon-btn" id="hud-tostart" title="Início (Ctrl+B)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 4v10M14.6 4.6L8.9 9l5.7 4.4z" stroke-width="1.7"/></svg></button>
+      <button class="icon-btn seg-nav" data-nudge="-1" title="Recuar 1 segundo (Shift+←)">−1s</button>
+      <button class="icon-btn seg-nav" data-nudge="-0.04" title="Recuar 1 quadro (←)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.6v6.8M11.9 4.7L7.5 9l4.4 4.3" stroke-width="1.8"/></svg></button>
+      <button class="icon-btn seg-nav" data-nudge="0.04" title="Avançar 1 quadro (→)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13.6 5.6v6.8M6.1 4.7L10.5 9l-4.4 4.3" stroke-width="1.8"/></svg></button>
+      <button class="icon-btn seg-nav" data-nudge="1" title="Avançar 1 segundo (Shift+→)">+1s</button>
+      <div class="speedbtns">
+        <button class="speed-btn" data-speed="0.5">0,5×</button>
+        <button class="speed-btn active" data-speed="1">1×</button>
+        <button class="speed-btn" data-speed="1.5">1,5×</button>
+        <button class="speed-btn" data-speed="2">2×</button>
+        <button class="speed-btn" data-speed="2.5">2,5×</button>
+        <button class="speed-btn" data-speed="3">3×</button>
+      </div>
+      <span class="time"><b class="t-clock" id="hud-tcur">0:00,0</b> / <span id="hud-tdur">--:--</span></span>
+    </div>
+    <canvas id="hud-wave" title="Onda do trecho atual. Clique para levar a agulha até um ponto."></canvas>
+  </div>
+
+  <!-- ============ TELA 1 · SEGMENTAR ============ -->
+  <section class="view workspace active" id="view-segmentar">
+    <div class="canvas-area px-scroll">
+      <div class="card seg-stage-card">
+        <div class="seg-collapsed-list" id="seg-collapsed-list"></div>
+        <div class="seg-stage">
+        <div class="player-wrap">
+          <div class="score-toolbar">
+            <span class="hint" style="flex:0 0 auto;font-weight:700">Vídeo</span>
+            <span class="hint" style="flex:1"></span>
+            <button class="icon-btn" id="video-zoomout" title="Menos zoom no vídeo"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5"/></svg></button>
+            <span class="hint" id="video-zoomval" style="flex:0 0 auto;min-width:34px;text-align:center;font-variant-numeric:tabular-nums">100%</span>
+            <button class="icon-btn" id="video-zoomin" title="Mais zoom no vídeo"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5M8 5.5v5"/></svg></button>
+            <button class="icon-btn" id="video-hide" title="Mostrar ou ocultar o vídeo (esconder acelera a segmentação)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1.5 9S4 4 9 4s7.5 5 7.5 5-2.5 5-7.5 5S1.5 9 1.5 9z"/><circle cx="9" cy="9" r="2"/></svg></button>
+          </div>
+          <div id="seg-player-content" class="player-content"><div class="audio-only">Nenhuma mídia carregada.</div></div>
+        </div>
+        <div class="col-resizer" id="stage-resizer" title="Arraste para redimensionar vídeo e partitura"></div>
+        <div class="score-pane">
+          <div class="score-toolbar">
+            <span class="hint" style="flex:0 0 auto;font-weight:700">Partitura</span>
+            <span id="score-status" class="hint" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+            <button class="icon-btn score-view-btn" id="score-view" title="Alternar Página/Display"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="3" y="2.5" width="12" height="13" rx="1"/><path d="M6 6h6M6 9h6M6 12h4"/></svg><span class="score-view-lab">Display</span></button>
+            <button class="icon-btn active" id="score-follow" title="Seguir a agulha: a partitura acompanha a reprodução. Desligue para rolar livre e olhar outras regiões."><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11a3 3 0 0 0 4.2 0l2.3-2.3a3 3 0 0 0-4.2-4.2l-1 1"/><path d="M11 7a3 3 0 0 0-4.2 0L4.5 9.3a3 3 0 0 0 4.2 4.2l1-1"/></svg></button>
+            <button class="icon-btn" id="score-mnum" title="Números só no início de cada linha. Clique para mostrar em todos os compassos."><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 3.5L5 14.5M13 3.5l-2 11M3.5 7.2h11M2.5 10.8h11"/></svg></button>
+            <button class="icon-btn" id="score-zoomout" title="Menos zoom: mais compassos por linha e mais linhas visíveis"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5"/></svg></button>
+            <span class="hint" id="score-zoomval" style="flex:0 0 auto;min-width:34px;text-align:center;font-variant-numeric:tabular-nums">100%</span>
+            <button class="icon-btn" id="score-zoomin" title="Mais zoom: menos compassos, maiores"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5M8 5.5v5"/></svg></button>
+            <button class="icon-btn" id="score-invert" title="Inverter as cores da partitura (fundo escuro)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6" stroke-width="1.7"/><path d="M9 3a6 6 0 010 12z" fill="currentColor" stroke="none"/></svg></button>
+            <button class="icon-btn" id="score-collapse" title="Mostrar ou ocultar a partitura"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1.5 9S4 4 9 4s7.5 5 7.5 5-2.5 5-7.5 5S1.5 9 1.5 9z"/><circle cx="9" cy="9" r="2"/></svg></button>
+          </div>
+          <div id="seg-score" class="score-render"><div class="hint" style="padding:20px">Abra um MusicXML (.musicxml, .xml, .mxl) para ver a partitura ao lado do vídeo, sincronizada por compasso.</div></div>
+        </div>
+        <!-- os painéis de GRÁFICO são gerados dinamicamente (P.SegGCP): 1 por padrão, + pelo menu -->
+        </div>
+        <div class="stage-vresizer" id="stage-vresizer" title="Arraste para ajustar a altura dos módulos"></div>
+      </div>
+
+      <div class="card" id="tl-card" style="padding:10px">
+        <div class="tl-controls">
+        <div class="chart-toolbar" style="margin-bottom:8px">
+          <button class="icon-btn" id="tl-zoomout" title="Reduzir (Ctrl −)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5"/></svg></button>
+          <button class="icon-btn" id="tl-zoomin" title="Ampliar (Ctrl +)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5"/><path d="M11.8 11.8L16 16M5.5 8h5M8 5.5v5"/></svg></button>
+          <button class="icon-btn" id="tl-zoomreset" title="Escala real: 100% = 10 ms/px (Ctrl 0)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v8M3.2 9h3.2M4.8 7.5L6.4 9l-1.6 1.5M14.8 9h-3.2M13.2 7.5L11.6 9l1.6 1.5" stroke-width="1.7"/></svg></button>
+          <button class="icon-btn" id="tl-fit" title="Caber tudo (ver o arquivo inteiro)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.4 4.4v9.2M15.6 4.4v9.2M5 9h8M5 9l2.3-2.3M5 9l2.3 2.3M13 9l-2.3-2.3M13 9l-2.3 2.3" stroke-width="1.7"/></svg></button>
+          <button class="icon-btn adv-only" id="tl-prev" title="Tela anterior (Alt+PgUp)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 4.2v9.6M9.6 4.9L6 9l3.6 4.1M14.8 4.9L11.2 9l3.6 4.1" stroke-width="1.7"/></svg></button>
+          <button class="icon-btn adv-only" id="tl-next" title="Próxima tela (Alt+PgDn)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.8 4.2v9.6M8.4 4.9L12 9l-3.6 4.1M3.2 4.9L6.8 9l-3.6 4.1" stroke-width="1.7"/></svg></button>
+          <button class="icon-btn active" id="tl-link" title="Vincular a rolagem ao player (a vista segue a agulha). Desative para rolar livre.">
+            <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11a3 3 0 0 0 4.2 0l2.3-2.3a3 3 0 0 0-4.2-4.2l-1 1"/><path d="M11 7a3 3 0 0 0-4.2 0L4.5 9.3a3 3 0 0 0 4.2 4.2l1-1"/></svg>
+          </button>
+          <span class="hint adv-only" style="margin-left:8px">Amplitude</span>
+          <input class="adv-only" type="range" id="tl-amp" min="1" max="20" step="0.5" value="1" style="width:84px;flex:0 0 auto">
+          <span class="hint adv-only">Altura</span>
+          <input class="adv-only" type="range" id="tl-lh" min="16" max="170" step="2" value="30" style="width:70px;flex:0 0 auto">
+          <div class="tl-spacer" style="flex:1"></div>
+          <span class="hint adv-only" id="tl-zoompct">100%</span>
+        </div>
+        <div class="tl-transport">
+          <button class="btn sm secondary" id="seg-play" title="Reproduzir ou pausar (Espaço)"><svg width="13" height="13" viewBox="0 0 18 18" fill="currentColor"><polygon points="4,2 15,9 4,16"/></svg></button>
+          <button class="icon-btn adv-only" id="seg-tostart" title="Início (Ctrl+B)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 4v10M14.6 4.6L8.9 9l5.7 4.4z" stroke-width="1.7"/></svg></button>
+          <button class="icon-btn seg-nav adv-only" data-nudge="-1" title="Recuar 1 segundo (Shift+←)">−1s</button>
+          <button class="icon-btn seg-nav adv-only" data-nudge="-0.04" title="Recuar 1 quadro (←)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.6v6.8M11.9 4.7L7.5 9l4.4 4.3" stroke-width="1.8"/></svg></button>
+          <button class="icon-btn seg-nav adv-only" data-nudge="0.04" title="Avançar 1 quadro (→)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13.6 5.6v6.8M6.1 4.7L10.5 9l-4.4 4.3" stroke-width="1.8"/></svg></button>
+          <button class="icon-btn seg-nav adv-only" data-nudge="1" title="Avançar 1 segundo (Shift+→)">+1s</button>
+          <div class="speedbtns">
+            <button class="speed-btn" data-speed="0.5">0,5×</button>
+            <button class="speed-btn active" data-speed="1">1×</button>
+            <button class="speed-btn" data-speed="1.5">1,5×</button>
+            <button class="speed-btn" data-speed="2">2×</button>
+            <button class="speed-btn" data-speed="2.5">2,5×</button>
+            <button class="speed-btn" data-speed="3">3×</button>
+          </div>
+          <span class="tl-time"><b class="t-clock" id="seg-tcur">0:00,0</b> / <span id="seg-tdur">--:--</span></span>
+          <div class="tl-spacer" style="flex:1"></div>
+          <span class="seg-pending-badge" id="seg-pending" title="Segmento aberto: aperte Enter de novo (depois deste tempo) para fechar. Esc cancela."><span class="dot"></span><span id="seg-pending-txt">aberto</span></span>
+          <span class="hint" id="seg-annrange" title="Início → fim da anotação sob a agulha"></span>
+        </div>
+        <label class="tl-mode" title="Iniciante mostra só o essencial; avançado mostra tudo.">
+          <span class="tl-mode-lab">Iniciante</span>
+          <span class="tl-switch"><input type="checkbox" id="tl-advanced"><span class="tl-switch-slider"></span></span>
+          <span class="tl-mode-lab">Avançado</span>
+        </label>
+        </div>
+        <div id="seg-overview" class="tl-overview" title="Visão geral do arquivo inteiro. Clique ou arraste a janela para navegar (independe do zoom)."></div>
+        <div id="seg-timeline"></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap">
+          <b id="seg-listtitle" class="t-screen">Segmentos</b>
+          <button class="icon-btn" id="seg-undo" title="Desfazer (Ctrl+Z)" disabled><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4L3 7.5 6.5 11"/><path d="M3 7.5h7.5a4 4 0 0 1 0 8H6"/></svg></button>
+          <button class="icon-btn" id="seg-redo" title="Refazer (Ctrl+Shift+Z)" disabled><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 4L15 7.5 11.5 11"/><path d="M15 7.5H7.5a4 4 0 0 0 0 8H12"/></svg></button>
+          <button class="btn sm secondary" id="seg-split" title="Dividir o segmento sob o cursor (playhead)">Dividir</button>
+          <button class="btn sm secondary" id="seg-blade" title="Ferramenta blade (B): clique num segmento para dividir no ponto do cursor"><svg viewBox="0 0 18 18" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M3 12l7-7 4 4-7 7H3z"/><path d="M9 6l3 3"/><path d="M2.5 15.5h6"/></svg>Blade</button>
+          <button class="btn sm secondary" id="seg-mergeprev" title="Unir o segmento ativo com o anterior">Unir à anterior</button>
+          <button class="btn sm secondary" id="seg-mergenext" title="Unir o segmento ativo com o seguinte">Unir à seguinte</button>
+          <button class="btn sm ghost" id="seg-resetwhisper" style="display:none" title="Descartar edições manuais e voltar à segmentação automática">Voltar à segmentação automática</button>
+          <div class="tl-spacer" style="flex:1"></div><span class="hint" id="seg-coverage"></span><span class="hint"><span id="seg-count">0</span> nesta camada</span>
+        </div>
+        <div id="seg-listhost" style="max-height:340px;overflow:auto"></div>
+      </div>
+    </div>
+
+    <aside class="sidebar inspector">
+      <details class="group" open>
+        <summary>Importação <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="dropzone" id="seg-drop">Arraste o áudio e o vídeo (pode ser os dois juntos).<br><span class="hint">Os arquivos permanecem neste computador.</span></div>
+          <input type="file" id="seg-file" accept="video/*,audio/*" multiple hidden>
+          <div id="seg-media-loaded"></div>
+          <button class="btn ghost sm wide" id="score-open" style="margin-top:8px">Abrir partitura (MusicXML)</button>
+          <input type="file" id="score-file" accept=".musicxml,.xml,.mxl" hidden>
+        </div>
+      </details>
+
+      <details class="group" open id="mod-panel">
+        <summary>Módulos de visualização <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <p class="hint" style="margin:0 0 8px">Ative os painéis que aparecem ao lado do vídeo. Desativar aqui remove o painel da tela; o olho de cada painel apenas o oculta (reabre pela barrinha).</p>
+          <label class="mini" style="display:block;margin-bottom:4px">Layout</label>
+          <div id="mod-preset" class="mod-preset"></div>
+          <label class="row" style="margin-bottom:6px"><input type="checkbox" id="mod-video" checked style="flex:0 0 auto"> <span style="flex:1">Vídeo</span></label>
+          <label class="row" style="margin-bottom:6px"><input type="checkbox" id="mod-score" checked style="flex:0 0 auto"> <span style="flex:1">Partitura</span></label>
+          <div id="mod-graphs"></div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Transcrição automática (Whisper) <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field">
+            <label>Modelo de transcrição</label>
+            <select id="seg-wmodel"></select>
+            <div id="seg-wmodel-info" class="hint" style="margin-top:4px"></div>
+            <button class="btn secondary sm wide" id="seg-wmodel-get" style="margin-top:6px;display:none">Baixar e usar</button>
+            <div id="seg-wmodel-prog" style="display:none;margin-top:6px">
+              <div style="height:7px;border-radius:999px;background:var(--line);overflow:hidden"><div id="seg-wmodel-prog-bar" style="height:100%;width:0%;background:var(--accent);transition:width .15s ease"></div></div>
+              <div id="seg-wmodel-prog-lab" class="hint" style="margin-top:3px;font-variant-numeric:tabular-nums">0%</div>
+            </div>
+          </div>
+          <button class="btn wide" id="seg-whisper" disabled style="margin-top:10px">Transcrever a fala</button>
+          <div class="row" style="margin-top:6px">
+            <button class="btn secondary sm" id="seg-whisper-pause" disabled>Pausar</button>
+            <button class="btn secondary sm" id="seg-whisper-here" disabled title="Retoma da posição atual do player">Retomar do tempo atual</button>
+          </div>
+          <div class="field" style="margin-top:8px">
+            <label>Agrupar por pausa · <span id="seg-mergeval">1,0 s</span></label>
+            <input type="range" id="seg-merge" min="0" max="3" step="0.1" value="1">
+            <span class="hint">Une trechos separados por pausa menor que este valor. O reagrupamento é imediato e não exige nova transcrição.</span>
+          </div>
+          <p class="hint" style="margin-top:6px">Processa em janelas de 30 s. É possível pausar e retomar em arquivos longos.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Camadas<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="seg-tiers"></div>
+          <div class="row" style="margin-top:6px">
+            <button class="btn ghost" id="seg-addtier" style="flex:1">Adicionar camada</button>
+            <button class="btn ghost" id="seg-adddim" style="flex:1" title="Camada de escore ordinal em degraus no tempo (Módulo Multidimensional)">Nova dimensão</button>
+          </div>
+          <details class="group" id="tier-editor-wrap" style="display:none;margin-top:10px">
+            <summary>Editar camada <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+            <div class="group-body" id="tier-editor"></div>
+          </details>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Códigos de comportamento<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="seg-picker" class="legend"></div></div>
+      </details>
+
+      <details class="group">
+        <summary>Segmentação <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field">
+            <label>Modo</label>
+            <select id="seg-mode">
+              <option value="two">Dois toques, segmentos não adjacentes</option>
+              <option value="one">Um toque, segmentos contíguos</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Compensação de reação · <span id="seg-delayval">40 ms</span></label>
+            <input type="range" id="seg-delay" min="0" max="200" step="5" value="40">
+            <span class="hint">Desconta o atraso entre perceber e pressionar a tecla.</span>
+          </div>
+          <div class="hint"><kbd>Enter</kbd> segmenta · <kbd>Esc</kbd> encerra · <kbd>1</kbd> a <kbd>9</kbd> aplica o código</div>
+          <button class="btn secondary wide" id="seg-stages2obj" style="margin-top:8px" title="Cria (ou atualiza) a camada «Objetivos de Médio Prazo» a partir dos estágios que você dividiu no módulo Gráfico.">Estágios do gráfico → objetivos de médio prazo</button>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>ELAN <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <button class="btn ghost sm wide" id="seg-elan">Importar transcrição ELAN (.eaf)</button>
+          <input type="file" id="seg-elanfile" accept=".eaf,.xml,.eaf.001,application/xml,text/xml" hidden>
+          <div id="seg-elanmedia"></div>
+          <p class="hint" style="margin-top:6px">O ELAN traz as camadas e a mídia com o alinhamento. Poucos precisam disto.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Exportar e analisar <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <p class="hint" style="margin:0 0 8px">Escolha as camadas e colunas. Todos os tipos de camada entram (prática, vocabulário, dimensão e livre), com marcadores de índice opcionais.</p>
+          <div id="seg-export-host"></div>
+        </div>
+      </details>
+
+      <div style="flex:1"></div>
+    </aside>
+  </section>
+
+  <!-- ============ TELA 2 · TRANSCREVER ============ -->
+  <section class="view workspace" id="view-transcricao">
+    <div class="canvas-area px-scroll">
+      <div id="tr-stage-host"></div>
+      <div class="card" id="tr-progress-card" style="padding:10px 14px">
+        <div class="row" style="align-items:center;gap:10px">
+          <span class="hint" id="tr-progress-label" style="flex:0 0 auto">Codificação</span>
+          <div style="flex:1;height:7px;border-radius:999px;background:var(--line);overflow:hidden"><div id="tr-progress-bar" style="height:100%;width:0%;background:var(--ok, var(--accent));transition:width var(--dur-2, .18s) var(--ease, ease)"></div></div>
+          <span class="hint" id="tr-progress-num" style="flex:0 0 auto;font-variant-numeric:tabular-nums">0 / 0</span>
+          <button class="icon-btn" id="tr-undo" title="Desfazer (Ctrl+Z)" disabled><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4L3 7.5 6.5 11"/><path d="M3 7.5h7.5a4 4 0 0 1 0 8H6"/></svg></button>
+          <button class="icon-btn" id="tr-redo" title="Refazer (Ctrl+Shift+Z)" disabled><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 4L15 7.5 11.5 11"/><path d="M15 7.5H7.5a4 4 0 0 0 0 8H12"/></svg></button>
+        </div>
+      </div>
+      <div id="tr-status" class="status" style="display:none;margin-bottom:10px"></div>
+      <div class="card"><div id="tr-list" style="max-height:calc(100vh - 220px);overflow:auto"></div></div>
+    </div>
+    <aside class="sidebar inspector">
+      <details class="group" open>
+        <summary>Camada a transcrever <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><select id="tr-layer"></select></div>
+      </details>
+      <details class="group" open id="tr-clickmode-group">
+        <summary>Codificar pela partitura <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <button class="btn wide" id="tr-clickmode">Codificar clicando na partitura</button>
+          <div id="tr-click-hint" class="hint" style="margin-top:8px;min-height:16px;color:var(--accent)"></div>
+          <p class="hint" style="margin-top:6px">Clique o início e o fim do trecho; o compasso decimal sai da fórmula de compasso. Tecle <kbd>1</kbd>–<kbd>9</kbd> (numérico) para o código e avança tocando o próximo.</p>
+          <p class="hint" style="margin-top:4px">Nota do fim tocada só em parte? Semínima <kbd>/</kbd> ou <kbd>Q</kbd>, colcheia <kbd>*</kbd> ou <kbd>W</kbd>, semicolcheia <kbd>−</kbd> ou <kbd>E</kbd>, ponto <kbd>+</kbd> ou <kbd>R</kbd>. Repetir o anterior: <kbd>0</kbd> ou <kbd>T</kbd>.</p>
+        </div>
+      </details>
+      <details class="group" open>
+        <summary>Códigos de comportamento <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="tr-codes"></div>
+          <button class="btn secondary wide" id="tr-copyprev" style="margin-top:8px" title="Repete início, fim e código do trecho anterior e avança (numérico 0; T no modo de clique; Alt+C sempre)">Repetir o trecho anterior <kbd>0</kbd> / <kbd>T</kbd> / <kbd>Alt</kbd>+<kbd>C</kbd></button>
+        </div>
+      </details>
+      <details class="group" open>
+        <summary>Reprodução por trecho <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="tr-loop" style="flex:0 0 auto"> <span style="flex:1">Repetir o trecho em loop <kbd>Alt</kbd>+<kbd>L</kbd></span></label>
+          <div class="field">
+            <label>Velocidade</label>
+            <select id="tr-speed"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="2">2×</option></select>
+          </div>
+          <div class="field">
+            <label>Buffer de vídeo (trechos curtos)</label>
+            <select id="tr-vpool">
+              <option value="auto">Automático (pela máquina)</option>
+              <option value="3">Alto (3) - máquinas fortes</option>
+              <option value="2">Médio (2)</option>
+              <option value="1">Desligado (1) - máquinas fracas</option>
+            </select>
+            <p class="hint" style="margin-top:4px">Mais buffer = trocar/replay de trechos curtos sem atraso, mas usa mais memória e vídeo. Baixe se travar.</p>
+          </div>
+        </div>
+      </details>
+      <details class="group" id="tr-ficha-group">
+        <summary>Ficha de compassos (manual) <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="tr-ficha"></div></div>
+      </details>
+      <details class="group" open>
+        <summary>Atalhos de teclado <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="tr-shortcuts"></div></div>
+      </details>
+      <details class="group">
+        <summary>Exportar tabela <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <p class="hint" style="margin:0 0 8px">Escolha as camadas e colunas. Todos os tipos de camada entram (prática, vocabulário, dimensão e livre), com marcadores de índice opcionais.</p>
+          <div id="tr-export-host"></div>
+        </div>
+      </details>
+    </aside>
+  </section>
+
+  <!-- ============ TELA 3 · GRÁFICO ============ -->
+  <section class="view workspace" id="view-gcp">
+    <div class="canvas-area px-scroll">
+      <div class="gcp-tabs" id="gcp-tabs"></div>
+      <div class="gcp-panel">
+        <div class="empty" id="gcp-empty">Nenhum gráfico gerado nesta aba. Inicie pelo menu «Novo gráfico» no inspetor.</div>
+        <div class="chart-host"><div id="gcp-chart" style="display:none"></div></div>
+        <div id="gcp-stages" style="display:none"></div>
+        <div id="gcp-compare" class="gcp-compare px-scroll" hidden></div>
+      </div>
+      <div class="card" style="padding:14px">
+        <b class="t-strong">Relatório estatístico</b> <span class="hint">por comportamento, seção e estágio</span>
+        <div id="gcp-stats" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <aside class="sidebar inspector">
+      <details class="group" open>
+        <summary>Novo gráfico <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <button class="btn wide" id="gcp-package">Gerar pacote (GCP + Heatmap)</button>
+          <button class="btn secondary wide" id="gcp-from-transcribed" style="margin-top:8px">Gerar gráfico a partir dos dados transcritos</button>
+          <button class="btn secondary wide" id="gcp-from-project" style="margin-top:8px">Carregar gráfico de outro projeto</button>
+          <input type="file" id="gcp-projfile" accept=".praxis" hidden>
+          <button class="btn secondary wide" id="gcp-import" style="margin-top:8px">Importar CSV</button>
+          <input type="file" id="gcp-importfile" accept=".csv,text/csv" hidden>
+          <button class="btn secondary wide" id="gcp-example" style="margin-top:8px">Gerar exemplo</button>
+        </div>
+      </details>
+
+      <details class="group" open id="gcp-insp-compare">
+        <summary>Comparar <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <button class="btn sm wide" id="gcp-cmp-enter">Comparar dois gráficos</button>
+          <div id="gcp-cmp-controls" hidden>
+            <button class="btn sm secondary wide" id="gcp-cmp-exit" style="margin-bottom:10px">Sair da comparação</button>
+            <label class="mini" style="display:block;margin-bottom:2px">Gráfico à esquerda</label>
+            <select id="gcp-compare-a" class="mini" style="width:100%"></select>
+            <details class="cmp-axis-fold"><summary>Configurar eixos <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary><div id="gcp-cmp-axis-a" class="cmp-axis"></div></details>
+            <label class="mini" style="display:block;margin:10px 0 2px">Gráfico à direita</label>
+            <select id="gcp-compare-b" class="mini" style="width:100%"></select>
+            <details class="cmp-axis-fold"><summary>Configurar eixos <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary><div id="gcp-cmp-axis-b" class="cmp-axis"></div></details>
+            <label class="row" id="gcp-compare-prop-lbl" hidden style="margin-top:10px"><input type="checkbox" id="gcp-compare-prop" style="flex:0 0 auto"> <span style="flex:1">Padronizar escala (mesma altura de linha)</span></label>
+            <p class="hint" id="gcp-cmp-std-hint" hidden style="margin:8px 0 0">Arraste a borda direita para a largura e a inferior para a altura. Os dois gráficos usam a mesma escala.</p>
+            <button class="btn sm wide" id="gcp-cmp-export" style="margin-top:10px">Exportar comparação (PNG)</button>
+            <p class="hint" style="margin:8px 0 0">Arraste as bordas de cada card para redimensionar. Com "padronizar" ligado (mesmo tipo), os dois usam a mesma escala e os cards se ajustam ao dado.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Conjunto <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field"><label>Nome do conjunto</label><input type="text" id="gcp-cj-name" placeholder="Conjunto"></div>
+          <p class="hint" id="gcp-cj-info" style="margin:0 0 8px"></p>
+          <div class="field"><label>Vincular a outro conjunto (mesmo dataset)</label><select id="gcp-cj-link"></select></div>
+          <button class="btn sm secondary wide" id="gcp-cj-unlink">Desvincular (cópia independente)</button>
+          <p class="hint" style="margin:6px 0 0">Dica: arraste uma aba sobre outra para juntá-las no mesmo conjunto.</p>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Tipo do gráfico <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="seg3" id="gcp-style" role="group" aria-label="Tipo do gráfico">
+            <button type="button" data-style="gcp" class="active">GCP</button>
+            <button type="button" data-style="heatmap">Heatmap</button>
+          </div>
+          <p class="hint" id="gcp-style-desc" style="margin:8px 0 0"></p>
+        </div>
+      </details>
+
+      <details class="group heat-only" open>
+        <summary>Parâmetros do heatmap <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field"><label>Eixo Y (agrupar por)</label><select id="gcp-heatgroup">
+            <option value="stage">Estágio</option>
+            <option value="behavior">Comportamento</option>
+            <option value="time">Tempo</option>
+          </select></div>
+          <div class="field"><label>Tipo de dado</label><select id="gcp-heatmetric">
+            <option value="duration">Duração acumulada na região</option>
+            <option value="coverage">Cobertura (nº de segmentos)</option>
+            <option value="onset">Pontos de início</option>
+            <option value="offset">Pontos de parada</option>
+            <option value="repeat">Repetições (reinícios no mesmo lugar)</option>
+          </select></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Predefinição<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field">
+            <label>Predefinição ativa</label>
+            <select id="gcp-preset"></select>
+          </div>
+          <div class="row">
+            <button class="btn sm ghost" id="gcp-preset-new" style="flex:1">Nova</button>
+            <button class="btn sm ghost" id="gcp-preset-ren" style="flex:1">Renomear</button>
+            <button class="btn sm ghost" id="gcp-preset-del" style="flex:1">Remover</button>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <button class="btn sm ghost" id="gcp-preset-export" style="flex:1" title="Salva a predefinição ativa num arquivo .praxpreset (novo arquivo)">Exportar</button>
+            <button class="btn sm ghost" id="gcp-preset-import" style="flex:1" title="Carrega uma predefinição .praxpreset e a aplica neste projeto">Importar</button>
+            <button class="btn sm ghost" id="gcp-preset-save" style="flex:1" title="Grava por cima do arquivo .praxpreset (o último exportado/importado, ou escolhe um) atualizando-o com a predefinição atual">Salvar</button>
+            <input type="file" id="gcp-preset-importfile" accept=".praxpreset,application/json,.json" hidden>
+          </div>
+          <div class="field gcp-only" style="margin-top:10px"><label>Opacidade · <span id="gcp-opval">92%</span></label><input type="range" id="gcp-opacity" min="0.2" max="1" step="0.02" value="0.92"></div>
+          <div class="field gcp-only"><label>Arredondamento dos cantos · <span id="gcp-bradval">1.5</span></label><input type="range" id="gcp-brad" min="0" max="8" step="0.5" value="1.5"></div>
+          <label class="row gcp-only" style="margin-bottom:6px"><input type="checkbox" id="gcp-outline" style="flex:0 0 auto"> <span style="flex:1">Contorno das barras</span></label>
+          <div class="row gcp-only" style="margin-bottom:6px"><span id="gcp-outcolor-host" style="flex:0 0 auto"></span><label class="mini" style="flex:1">largura <input type="range" id="gcp-outwidth" min="0.5" max="4" step="0.5" value="1" style="width:100%"></label></div>
+          <div class="field"><label>Fonte do gráfico</label><select id="gcp-font">
+            <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+            <option value="Arial, Helvetica, sans-serif">Sans (Arial)</option>
+            <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica</option>
+            <option value="Calibri, sans-serif">Calibri</option>
+            <option value="Verdana, Geneva, sans-serif">Verdana</option>
+            <option value="'Times New Roman', Times, serif">Serif (Times)</option>
+            <option value="Georgia, serif">Georgia</option>
+          </select></div>
+          <div class="subgroup-title" style="margin-top:10px">Comportamentos</div>
+          <div id="gcp-legend"></div>
+        </div>
+      </details>
+
+      <details class="group gcp-only">
+        <summary>Legenda <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="gcp-legend-show" style="flex:0 0 auto"> <span style="flex:1">Mostrar legenda no gráfico</span></label>
+          <div id="gcp-legend-opts" hidden>
+            <div class="field"><label>Posição</label>
+              <select id="gcp-legend-pos">
+                <option value="right">À direita (na margem)</option>
+                <option value="top-right">Canto superior direito</option>
+                <option value="top-left">Canto superior esquerdo</option>
+                <option value="bottom-right">Canto inferior direito</option>
+                <option value="bottom-left">Canto inferior esquerdo</option>
+              </select>
+            </div>
+            <div class="field"><label>Tamanho da fonte · <span id="gcp-legend-sizeval">10</span></label><input type="range" id="gcp-legend-size" min="7" max="18" step="1" value="10"></div>
+            <div class="field"><label>Tamanho do quadradinho · <span id="gcp-legend-swval">12</span></label><input type="range" id="gcp-legend-swatch" min="6" max="22" step="1" value="12"></div>
+            <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-legend-outline" style="flex:0 0 auto"> <span style="flex:1">Contorno preto nos quadrados</span></label>
+            <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-legend-onlyused" style="flex:0 0 auto"> <span style="flex:1">Só os comportamentos usados (por estágio no split)</span></label>
+            <div class="row" style="gap:8px">
+              <div class="field" style="flex:1;margin:0"><label>Deslocar X · <span id="gcp-legend-offxval">0</span></label><input type="range" id="gcp-legend-offx" min="-400" max="400" step="2" value="0"></div>
+              <div class="field" style="flex:1;margin:0"><label>Deslocar Y · <span id="gcp-legend-offyval">0</span></label><input type="range" id="gcp-legend-offy" min="-400" max="400" step="2" value="0"></div>
+            </div>
+            <div class="subgroup-title" style="margin-top:8px">Rótulos</div>
+            <p class="hint" style="margin:0 0 6px">Deixe vazio para usar «código · nome». Escreva para customizar o texto. Arraste ⠿ para reordenar a legenda.</p>
+            <div id="gcp-legend-labels"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="group gcp-only">
+        <summary>Partitura <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="gcp-score-show" style="flex:0 0 auto"> <span style="flex:1">Faixa de partitura alinhada ao compasso</span></label>
+          <p class="hint" id="gcp-score-hint" style="margin:0 0 8px">Carregue uma partitura na aba Segmentar. A faixa mostra os compassos do gráfico, alinhados ao eixo.</p>
+          <div id="gcp-score-opts" hidden>
+            <div class="field"><label>Posição</label><select id="gcp-score-pos"><option value="above">Acima do gráfico</option><option value="below">Abaixo do gráfico</option></select></div>
+            <div class="field"><label>Altura da faixa · <span id="gcp-score-hval">90</span> px</label><input type="range" id="gcp-score-height" min="40" max="220" step="2" value="90"></div>
+            <div class="field"><label>Tamanho das notas · <span id="gcp-score-sval">40</span></label><input type="range" id="gcp-score-scale" min="20" max="70" step="2" value="40"></div>
+            <div class="field"><label>Espaço entre faixa e gráfico · <span id="gcp-score-gval">8</span> px</label><input type="range" id="gcp-score-gap" min="0" max="40" step="1" value="8"></div>
+            <div class="field"><label>Pautas</label><select id="gcp-score-staff"><option value="all">Todas</option><option value="top">Só a de cima</option></select></div>
+            <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-score-mnum" style="flex:0 0 auto"> <span style="flex:1">Números de compasso na faixa</span></label>
+            <div id="gcp-score-status" class="status" style="display:none;margin-top:6px"></div>
+            <p class="hint" style="margin-top:4px">O espaçamento dentro do compasso é esticado para casar com o eixo do GCP (o preço do alinhamento). Ajuste tamanho/altura até ficar legível.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Eixos <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="row" style="gap:8px">
+            <div class="field" style="flex:1;margin:0"><label>Compasso mín.</label><input type="number" id="gcp-mmin" placeholder="auto" step="1"></div>
+            <div class="field" style="flex:1;margin:0"><label>Compasso máx.</label><input type="number" id="gcp-mmax" placeholder="auto" step="1"></div>
+          </div>
+          <div class="row" style="gap:8px">
+            <div class="field" style="flex:1;margin:0"><label>Intervalo da grade</label><input type="number" id="gcp-tickstep" placeholder="auto" min="0" step="1"></div>
+            <div class="field" style="flex:1;margin:0"><label>Intervalo rótulos X</label><input type="number" id="gcp-labelstep" placeholder="auto" min="0" step="1"></div>
+          </div>
+          <div class="row gcp-only" style="gap:8px">
+            <div class="field" style="flex:1;margin:0"><label>Intervalo rótulos Y (segmentos)</label><input type="number" id="gcp-ylabelstep" placeholder="auto" min="0" step="1"></div>
+          </div>
+          <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-grid" checked style="flex:0 0 auto"> <span style="flex:1">Grade</span></label>
+          <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-xlabels" checked style="flex:0 0 auto"> <span style="flex:1">Rótulos do eixo de compasso</span></label>
+          <label class="row gcp-only" style="margin-bottom:6px"><input type="checkbox" id="gcp-invert" style="flex:0 0 auto"> <span style="flex:1">Inverter o eixo vertical</span></label>
+          <label class="row gcp-only" id="gcp-xbottom-row" hidden style="margin-bottom:6px"><input type="checkbox" id="gcp-xbottom" style="flex:0 0 auto"> <span style="flex:1">Mover eixo X para baixo</span></label>
+          <label class="row gcp-only" style="margin-bottom:8px"><input type="checkbox" id="gcp-segtitle" checked style="flex:0 0 auto"> <span style="flex:1">Título do eixo de segmento</span></label>
+          <div class="subgroup" id="gcp-axistitles">
+            <div class="subgroup-title">Títulos dos eixos</div>
+            <div class="field"><label>Texto do eixo X (compasso)</label><input type="text" id="gcp-xtitle" value="Compasso"></div>
+            <div class="field"><label>Texto do eixo Y (segmento)</label><input type="text" id="gcp-ytitle" value="Segmento de prática"></div>
+            <div class="field"><label>Tamanho · <span id="gcp-axtsizeval">11</span></label><input type="range" id="gcp-axtsize" min="7" max="24" step="1" value="11"></div>
+            <div class="field"><label>Tracking (espaço entre letras) · <span id="gcp-axttrackval">0</span></label><input type="range" id="gcp-axttrack" min="0" max="8" step="0.5" value="0"></div>
+            <div class="field"><label>Distância título ↔ rótulos · <span id="gcp-axtgapval">15</span></label><input type="range" id="gcp-axtgap" min="2" max="40" step="1" value="15"></div>
+            <div class="row" style="margin-bottom:6px;align-items:center;gap:6px"><span id="gcp-axtcolor-host" style="flex:0 0 auto" title="cor dos títulos dos eixos"></span><span class="mini" style="flex:1">Cor dos títulos</span></div>
+            <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-axtbold" style="flex:0 0 auto"> <span style="flex:1">Negrito</span></label>
+            <label style="display:block;margin-bottom:4px">Caixa</label>
+            <div class="seg3" id="gcp-axtcase" role="group" aria-label="Caixa dos títulos">
+              <button type="button" data-case="none" class="active">Original</button>
+              <button type="button" data-case="upper">MAIÚSCULAS</button>
+              <button type="button" data-case="lower">minúsculas</button>
+            </div>
+          </div>
+          <p class="hint" style="margin-top:2px">Deixe mín./máx. e intervalos vazios para automático.</p>
+        </div>
+      </details>
+
+      <details class="group gcp-only">
+        <summary>Colunas <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row" style="margin-bottom:6px"><input type="checkbox" id="gcp-colview" style="flex:0 0 auto"> <span style="flex:1">Ver em colunas</span></label>
+          <div id="gcp-col-opts" hidden>
+            <div class="field"><label>Colunas</label><input type="number" id="gcp-colcount" min="2" max="12" step="1" value="3"></div>
+            <div class="field"><label>Espaçamento entre colunas · <span id="gcp-colgapval">10px</span></label><input type="range" id="gcp-colgap" min="0" max="48" step="1" value="10"></div>
+            <label style="display:block;margin-bottom:4px">Eixo das colunas</label>
+            <div class="seg3" id="gcp-colaxis" role="group" aria-label="Eixo das colunas">
+              <button type="button" data-mode="proportional" class="active">Proporcionais</button>
+              <button type="button" data-mode="own">Eixo próprio</button>
+              <button type="button" data-mode="efficient">Eficientes</button>
+            </div>
+            <p class="hint" id="gcp-colaxis-hint" style="margin:4px 0 0"></p>
+            <div class="field" id="gcp-coleffscale-row" hidden><label>Extensão horizontal (eficiente) · <span id="gcp-coleffscaleval">100%</span></label><input type="range" id="gcp-coleffscale" min="0.3" max="4" step="0.1" value="1"></div>
+            <label class="row" style="margin-top:6px"><input type="checkbox" id="gcp-colsingleaxis" style="flex:0 0 auto"> <span style="flex:1">Um só título de eixo X e Y (não repetir nas colunas)</span></label>
+          </div>
+          <div class="subgroup" id="gcp-vsize">
+            <div class="subgroup-title">Altura dos segmentos</div>
+            <label class="row" id="gcp-colfit-row" hidden style="margin-bottom:6px"><input type="checkbox" id="gcp-colfit" checked style="flex:0 0 auto"> <span style="flex:1">Caber na altura da tela</span></label>
+            <div id="gcp-vsize-sliders">
+              <div class="field"><label>Espaçamento entre segmentos · <span id="gcp-rsval">9</span></label><input type="range" id="gcp-rs" min="3" max="30" step="1" value="9"></div>
+              <div class="field"><label>Espessura da barra · <span id="gcp-bhval">7</span></label><input type="range" id="gcp-bh" min="2" max="24" step="1" value="7"></div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Seções<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="gcp-sections-list"></div>
+          <div class="row" style="margin-top:6px">
+            <input id="gcp-sec-measure" placeholder="compasso" style="flex:0 0 66px">
+            <input id="gcp-sec-name" placeholder="nome, por exemplo Parte B" style="flex:1">
+            <button class="btn sm" id="gcp-sec-add" style="flex:0 0 auto">Incluir</button>
+          </div>
+          <div class="row" style="margin-top:6px"><button class="btn sm ghost" id="gcp-sec-fromscore" style="flex:1" title="Lê barras duplas e marcas de ensaio da partitura aberta na aba Segmentar">Puxar da partitura</button></div>
+          <div class="row" style="margin-top:8px">
+            <span id="gcp-sec-color-host" style="flex:0 0 auto" title="cor do traço"></span>
+            <label class="mini" style="flex:1">traço <select id="gcp-sec-dash" style="width:100%"><option value="5 4">tracejado</option><option value="">sólido</option><option value="2 3">pontilhado</option></select></label>
+          </div>
+          <div class="row" style="margin-top:6px"><label class="mini" style="flex:1">largura do traço <input type="range" id="gcp-sec-width" min="0.5" max="4" step="0.5" value="1.4" style="width:100%"></label></div>
+          <label class="row gcp-only" style="margin-top:6px"><input type="checkbox" id="gcp-sec-behind" style="flex:0 0 auto"> <span style="flex:1">Traço atrás das barras</span></label>
+          <label class="row" style="margin-top:6px"><input type="checkbox" id="gcp-sec-labels" checked style="flex:0 0 auto"> <span style="flex:1">Mostrar rótulos das seções</span></label>
+          <div class="row" style="margin-top:4px;align-items:center;gap:6px">
+            <span id="gcp-sec-labelcolor-host" style="flex:0 0 auto" title="cor do rótulo"></span>
+            <label class="mini" style="flex:1">tamanho <input type="range" id="gcp-sec-labelsize" min="7" max="22" step="1" value="11" style="width:100%"></label>
+          </div>
+          <p class="hint" style="margin:2px 0 0">Duplo clique no nome (na lista abaixo) para renomear a seção.</p>
+          <label class="row" style="margin-top:6px"><input type="checkbox" id="gcp-sectint" style="flex:0 0 auto"> <span style="flex:1">Tintas de fundo por seção</span></label>
+          <div class="field"><label>Opacidade da tinta · <span id="gcp-sectint-opval">12%</span></label><input type="range" id="gcp-sectint-op" min="0" max="1" step="0.01" value="0.12"></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Estágios<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row gcp-only" style="margin-bottom:8px;margin-top:6px"><input type="checkbox" id="gcp-split" style="flex:0 0 auto"> <span style="flex:1">Dividir por estágios</span></label>
+          <label class="row gcp-only" style="margin-bottom:6px"><input type="checkbox" id="gcp-stagelabel" style="flex:0 0 auto"> <span style="flex:1">Mostrar rótulos dos estágios</span></label>
+          <div id="gcp-stagelabel-opts" class="gcp-only" hidden style="margin-bottom:6px">
+            <div class="row" style="margin-top:2px;align-items:center;gap:6px">
+              <span id="gcp-stagelabel-color-host" style="flex:0 0 auto" title="cor do rótulo"></span>
+              <label class="mini" style="flex:1">tamanho <input type="range" id="gcp-stagelabel-size" min="7" max="24" step="1" value="11" style="width:100%"></label>
+            </div>
+            <div class="field" style="margin-top:4px"><label>Tracking · <span id="gcp-stagelabel-trackval">0</span></label><input type="range" id="gcp-stagelabel-track" min="0" max="8" step="0.5" value="0"></div>
+            <div class="field"><label>Offset horizontal · <span id="gcp-stagelabel-offval">0</span></label><input type="range" id="gcp-stagelabel-off" min="-60" max="60" step="1" value="0"></div>
+            <div class="row" style="gap:12px;margin-bottom:4px">
+              <label class="mini"><input type="checkbox" id="gcp-stagelabel-bold" checked style="flex:0 0 auto"> negrito</label>
+              <label class="mini"><input type="checkbox" id="gcp-stagelabel-italic" style="flex:0 0 auto"> itálico</label>
+            </div>
+            <label class="row" style="margin-bottom:4px"><input type="checkbox" id="gcp-stagelabel-halo" checked style="flex:0 0 auto"> <span style="flex:1">Halo de leitura (fundo atrás do texto, p/ não sumir nas barras)</span></label>
+            <label style="display:block;margin:2px 0 4px" class="mini">Caixa</label>
+            <div class="seg3" id="gcp-stagelabel-case" role="group" aria-label="Caixa do rótulo">
+              <button type="button" data-case="none" class="active">Original</button>
+              <button type="button" data-case="upper">MAIÚSC.</button>
+              <button type="button" data-case="lower">minúsc.</button>
+            </div>
+            <label class="row" style="margin-top:6px"><input type="checkbox" id="gcp-stagelabel-inside" checked style="flex:0 0 auto"> <span style="flex:1">Dentro da área do gráfico</span></label>
+            <label class="row" style="margin-top:4px"><input type="checkbox" id="gcp-stagelabel-vertical" style="flex:0 0 auto"> <span style="flex:1">Vertical (como o título do eixo Y)</span></label>
+            <label style="display:block;margin:6px 0 4px" class="mini">Lado</label>
+            <div class="seg3" id="gcp-stagelabel-side" role="group" aria-label="Lado do rótulo">
+              <button type="button" data-side="left" class="active">Esquerda</button>
+              <button type="button" data-side="right">Direita</button>
+            </div>
+            <label style="display:block;margin:6px 0 4px" class="mini">Alinhamento vertical</label>
+            <div class="seg3" id="gcp-stagelabel-align" role="group" aria-label="Alinhamento do rótulo">
+              <button type="button" data-align="center" class="active">Centralizado</button>
+              <button type="button" data-align="boundary">Na fronteira</button>
+            </div>
+            <p class="hint" style="margin:4px 0 0">Edite o nome de cada estágio na lista abaixo (ou use «Renumerar»).</p>
+          </div>
+          <label class="row gcp-only" style="margin-bottom:6px"><input type="checkbox" id="gcp-stagetint" style="flex:0 0 auto"> <span style="flex:1">Tintas de fundo por estágio</span></label>
+          <div class="field gcp-only"><label>Opacidade da tinta · <span id="gcp-stagetint-opval">12%</span></label><input type="range" id="gcp-stagetint-op" min="0" max="1" step="0.01" value="0.12"></div>
+          <label class="row gcp-only" style="margin-bottom:6px"><input type="checkbox" id="gcp-stageline" style="flex:0 0 auto"> <span style="flex:1">Linhas tracejadas entre estágios (sem tinta)</span></label>
+          <div id="gcp-stageline-opts" class="gcp-only" hidden>
+            <div class="row" style="margin-top:2px">
+              <span id="gcp-stageline-color-host" style="flex:0 0 auto" title="cor da linha"></span>
+              <label class="mini" style="flex:1">traço <select id="gcp-stageline-dash" style="width:100%"><option value="5 4">tracejado</option><option value="">sólido</option><option value="2 3">pontilhado</option></select></label>
+            </div>
+            <div class="row" style="margin-top:6px"><label class="mini" style="flex:1">largura da linha <input type="range" id="gcp-stageline-width" min="0.5" max="4" step="0.5" value="1.4" style="width:100%"></label></div>
+          </div>
+          <div id="gcp-stages-list"></div>
+          <button class="btn sm wide" id="gcp-stage-fromobj" style="margin-top:6px" title="Cria os estágios a partir da camada de objetivos de médio prazo transcrita: cada objetivo vira um estágio, com os segmentos que caem no seu intervalo de tempo. SUBSTITUI os estágios atuais.">Gerar estágios pelos objetivos de médio prazo</button>
+          <button class="btn sm secondary wide" id="gcp-stage-syncnames" style="margin-top:6px" title="Renomeia os estágios pelos objetivos de médio prazo transcritos, casando por tempo. Mantém fronteiras, tinta e estilo.">Atualizar nomes pelos objetivos de médio prazo</button>
+          <button class="btn sm secondary wide" id="gcp-stage-blade" style="margin-top:6px">Dividir por clique</button>
+          <p class="hint" id="gcp-stage-blade-hint" hidden style="margin:4px 0 0">Clique no gráfico onde quer dividir. O estágio ali é partido em dois nesse segmento.</p>
+          <div class="row" style="margin-top:6px">
+            <input id="gcp-stage-from" placeholder="seg. inicial" style="flex:0 0 60px">
+            <input id="gcp-stage-to" placeholder="final" style="flex:0 0 48px">
+            <input id="gcp-stage-name" placeholder="nome do estágio" style="flex:1">
+            <button class="btn sm" id="gcp-stage-add" style="flex:0 0 auto">Incluir</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Resumo dos estágios <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <p class="hint" style="margin:0 0 8px">Tabela dos estágios (objetivos de médio prazo): objetivo, segmentos início/fim, contagem e duração. Copie a tabela para o Word ou baixe em CSV/Excel.</p>
+          <div class="field"><label>Formato da tabela</label>
+            <select id="gcp-st-format">
+              <option value="grid">Grade completa</option>
+              <option value="abnt">ABNT (linhas horizontais)</option>
+              <option value="apa">APA 7</option>
+            </select>
+          </div>
+          <div class="row" style="gap:6px">
+            <div class="field" style="flex:0 0 74px"><label>Nº tabela</label><input type="text" id="gcp-st-number" placeholder="1"></div>
+            <div class="field" style="flex:1"><label>Sessão (vazio omite)</label><input type="text" id="gcp-st-session" placeholder="1"></div>
+          </div>
+          <div class="field"><label>Legenda da tabela</label><input type="text" id="gcp-st-caption" placeholder="Estágios de prática de … na peça …"></div>
+          <div class="field"><label>Fonte / Nota (sem o prefixo)</label><input type="text" id="gcp-st-fonte" value="O autor (2026)."></div>
+          <div class="row" style="gap:6px">
+            <button class="btn secondary" id="gcp-st-copy" style="flex:1">Copiar tabela</button>
+            <button class="btn secondary" id="gcp-st-csv" style="flex:1">CSV</button>
+            <button class="btn secondary" id="gcp-st-xlsx" style="flex:1">Excel</button>
+          </div>
+          <div id="gcp-st-status" class="status" style="display:none;margin-top:8px"></div>
+          <div class="px-scroll" style="margin-top:8px;overflow:auto;max-height:220px;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;color:#000"><div id="gcp-st-preview"></div></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Exportar para publicação <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div class="field"><label>Resolução em dpi</label><input type="number" id="gcp-dpi" value="300" min="72" max="600" step="1"></div>
+          <button class="btn wide" id="gcp-export-open">Exportar…</button>
+          <p class="hint" style="margin-top:6px">Abre a seleção de abas e gráficos para exportar em PNG, JPG ou SVG.</p>
+        </div>
+      </details>
+    </aside>
+  </section>
+
+  <!-- ============ TELA 4 · MULTIDIMENSIONAL ============ -->
+  <section class="view workspace" id="view-multidim">
+    <div class="canvas-area px-scroll">
+      <div id="mdim-stage-host"></div>
+      <div class="chart-toolbar"><h2 id="mdim-title" class="t-screen">Análise multidimensional</h2>
+        <div id="mdim-modes" class="seg-toggle" style="margin-left:auto;display:inline-flex;gap:4px" role="tablist" aria-label="Modo da aba">
+          <button class="btn sm" data-mode="resumo" title="Radar + linhas em degraus + estatística">Resumo</button>
+          <button class="btn sm" data-mode="coding" title="Foco no eixo ativo para codificar vendo os módulos (setas ↑/↓ trocam o eixo)">Codificação</button>
+          <button class="btn sm" data-mode="format" title="Editor de gráficos: várias abas, colunas, sobreposição e exportação">Formatação</button>
+          <button class="btn sm" data-mode="matrix" title="Figuras multi-sessão para publicação: matriz de step-plots, radar por tipo (faixa + nível médio) e barras de % do tempo por tipo">Figuras</button>
+        </div>
+      </div>
+      <div id="mdim-canvas"></div>
+    </div>
+
+    <aside class="sidebar inspector">
+      <div id="mdim-mod-slot"></div>
+      <div id="mdim-format-panels"></div>
+      <details class="group mdim-matrix-group" open style="display:none">
+        <summary>Figuras multi-sessão<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="mdim-matrix-panel"></div></div>
+      </details>
+      <details class="group mdim-coding-group" open>
+        <summary>Codificar por switch<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="mdim-idx-labels" style="flex:0 0 auto"> <span style="flex:1">Rótulos dos índices (mostra o código em cada keyframe)</span></label>
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="mdim-stage-bands" style="flex:0 0 auto"> <span style="flex:1">Bandas de estágio ao fundo (reusa os estágios do módulo Gráfico)</span></label>
+          <label class="row" style="margin-bottom:8px"><input type="checkbox" id="mdim-type-bands" style="flex:0 0 auto"> <span style="flex:1">Onde cada tipo de prática acontece (faixas coloridas ao fundo)</span></label>
+          <div id="mdim-typeappear"></div>
+          <div class="field"><label>Dimensão ativa</label><select id="mdim-activedim"></select></div>
+          <div id="mdim-coder"></div>
+          <p class="hint" style="margin-top:8px">Reproduza a mídia (<kbd>Espaço</kbd>) e clique num escore, ou tecle <kbd>1</kbd>–<kbd>N</kbd>, para inserir uma troca no tempo da agulha. No gráfico: <b>arraste</b> uma troca para movê-la, <b>clique</b> para selecioná-la e <kbd>Delete</kbd> (ou o «×») para removê-la. Clicar no fundo posiciona a agulha.</p>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Dimensões<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="mdim-dimlist"></div>
+          <button class="btn wide" id="mdim-adddim" style="margin-top:8px">+ Nova dimensão</button>
+          <div class="row" style="margin-top:6px">
+            <button class="btn ghost" id="mdim-modimport" style="flex:1" title="Importar dimensões e índices de um arquivo de modelo (.praxmod)">Importar modelo</button>
+            <button class="btn ghost" id="mdim-modexport" style="flex:1" title="Salvar as dimensões e índices atuais como um modelo reutilizável (.praxmod)">Salvar modelo</button>
+          </div>
+          <button class="btn ghost wide" id="mdim-modcats" style="margin-top:6px" title="Aplicar os TIPOS DE PRÁTICA de um modelo às dimensões atuais (casadas pelo nome), sem criar dimensões nem tocar na codificação. Útil para propagar tipos refinados entre projetos.">Atualizar tipos pelo modelo</button>
+          <input type="file" id="mdim-modfile" accept=".praxmod,application/json,.json" hidden>
+          <input type="file" id="mdim-modcatsfile" accept=".praxmod,application/json,.json" hidden>
+          <details style="margin-top:8px">
+            <summary class="mini" style="cursor:pointer;color:var(--txt-dim)">Trocar dados por CSV (formato ELAN)</summary>
+            <div class="row" style="margin-top:6px">
+              <button class="btn ghost" id="mdim-csvimport" style="flex:1" title="Importar dimensões de um CSV (formato ELAN)">Importar CSV</button>
+              <button class="btn ghost" id="mdim-csvexport" style="flex:1" title="Exportar as dimensões em CSV (formato ELAN)">Exportar CSV</button>
+            </div>
+            <input type="file" id="mdim-csvfile" accept=".csv,text/csv" hidden>
+          </details>
+          <p class="hint" style="margin-top:8px">Cada dimensão é uma camada de escore em degraus. Clique no nome para codificá-la; na engrenagem para configurar escores e índices. Um «modelo» (.praxmod) guarda o conjunto de dimensões e índices para reusar em outros projetos.</p>
+          <div id="mdim-tier-editor-wrap" style="display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><div id="mdim-tier-editor"></div></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Camadas comparativas<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="mdim-compares"></div>
+          <p class="hint" style="margin-top:6px">Compare a sessão atual com outras (de um CSV ou de outro `.praxis`) com o mesmo modelo de dimensões. Cada camada tem transporte próprio; no overlay os polígonos se sobrepõem, no modo lado a lado viram pequenos radares.</p>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Tipos de prática<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="mdim-cats"></div>
+          <p class="hint" style="margin-top:6px">Um tipo «acende» quando o escore corrente de todas as dimensões que ele restringe cai nos intervalos. No radar, o polígono ganha a cor do tipo ativo e as faixas de intervalo aparecem nos eixos. Use o olho para pré-visualizar as faixas de um tipo mesmo inativo.</p>
+        </div>
+      </details>
+
+
+      <details class="group">
+        <summary>Aparência do radar<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body"><div id="mdim-presets"></div><div id="mdim-appear"></div></div>
+      </details>
+
+      <details class="group mdim-export-group">
+        <summary>Exportar para publicação <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="mdim-export"></div>
+          <p class="hint" style="margin-top:6px">Pausa o transporte no estado desejado e exporte o radar ou as linhas. Largura×altura em px, fundo branco.</p>
+        </div>
+      </details>
+
+      <details class="group mdim-export-group">
+        <summary>Estados dos tipos<span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <div id="mdim-gif"></div>
+          <p class="hint" style="margin-top:6px">Exporte os tipos escolhidos como figura estática (SVG vetorial ou PNG) para texto e slides, ou como GIF animado. Tudo gerado localmente, sem internet.</p>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Exemplos <span class="chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3L8 6l-3.5 3"/></svg></span></summary>
+        <div class="group-body">
+          <button class="btn wide" id="mdim-didatico">Carregar exemplo didático</button>
+          <p class="hint" style="margin-top:6px">Um caso completo (3 dimensões com trajetória plausível + 3 tipos de prática) para explorar todos os recursos.</p>
+          <button class="btn secondary wide" id="mdim-exemplo" style="margin-top:8px">Carregar fixture de dev</button>
+          <p class="hint" style="margin-top:6px">Switches sintéticos, só para teste rápido. Não faz parte da versão final.</p>
+        </div>
+      </details>
+    </aside>
+  </section>
+
+</div>
+
+  <!-- ============ MODAL DE CONFIGURAÇÕES ============ -->
+  <div class="modal-overlay" id="settings-modal" hidden>
+    <div class="modal-card glass">
+      <div class="modal-head">
+        <b>Configurações</b>
+        <button class="icon-btn" id="settings-close" title="Fechar"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4l10 10M14 4L4 14"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-menu">
+          <button class="settings-tab active" data-panel="shortcuts">Atalhos</button>
+          <button class="settings-tab" data-panel="cifragem">Cifragem</button>
+          <button class="settings-tab" data-panel="pedal">Pedal</button>
+        </div>
+        <div class="settings-content">
+          <div class="settings-panel" id="settings-shortcuts"></div>
+          <div class="settings-panel" id="settings-cifragem" hidden></div>
+          <div class="settings-panel" id="settings-pedal" hidden></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="gcp-export-modal" hidden>
+    <div class="modal-card glass">
+      <div class="modal-head">
+        <b>Exportar gráficos</b>
+        <button class="icon-btn" id="gcp-export-close" title="Fechar"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4l10 10M14 4L4 14"/></svg></button>
+      </div>
+      <div class="modal-body" style="padding:14px 16px">
+        <p class="hint" style="margin:0 0 10px">Escolha o que exportar: uma ou mais abas e, dentro de cada aba, os gráficos (o gráfico inteiro e cada estágio, quando dividido).</p>
+        <div id="gcp-export-tree"></div>
+      </div>
+      <div class="modal-foot" style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--line);flex-wrap:wrap">
+        <label class="mini" style="display:flex;align-items:center;gap:6px">Formato
+          <select id="gcp-export-fmt"><option value="png">PNG</option><option value="jpg">JPG</option><option value="svg">SVG</option></select>
+        </label>
+        <label class="mini" style="display:flex;align-items:center;gap:6px">DPI
+          <input type="number" id="gcp-export-dpi" value="300" min="72" max="600" step="1" style="width:66px">
+        </label>
+        <span id="gcp-export-count" class="mini" style="color:var(--txt-dim);margin-left:auto"></span>
+        <button class="btn secondary sm" id="gcp-export-cancel">Cancelar</button>
+        <button class="btn sm" id="gcp-export-run">Exportar selecionados</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/gcp_example.js?v=d9f300ae80"></script>
+  <script src="js/util.js?v=7d2dc39cf0"></script>
+  <script src="js/keys.js?v=8e74bec1d7"></script>
+  <script src="js/gcp.js?v=85b20ea868"></script>
+  <script src="js/elan.js?v=fe33482cda"></script>
+  <script src="js/timeline.js?v=9bf946cd01"></script>
+  <script src="js/segmenter.js?v=f56ef45491"></script>
+  <script src="js/transcription.js?v=704b61cf12"></script>
+  <script src="js/mdim.js?v=03314326f3"></script>
+  <script src="js/grafia.js?v=f331c82095"></script>
+  <script src="js/pedal.js?v=88e0d7a18a"></script>
+  <script src="js/score.js?v=dad37143e1"></script>
+  <script src="js/scorestrip.js?v=3791451859"></script>
+  <script src="js/app.js?v=b3bbb2d9c9"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Configuração por máquina (caminhos locais das mídias)
+media-roots.txt
+
+# Projetos e dados de pesquisa: nunca versionar
+*.praxis
+*.praxmod
+*.praxpreset
+exemplos_elan/
+
+# Modelo do Whisper (> 100 MB, vai no pacote de release)
+vendor/models/
+
+# Artefatos locais
+__pycache__/
+*.pyc
+.claude/
+vendor/download.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentação interna de desenvolvimento (fica só na máquina do autor)
+docs/HANDOVER.md
+docs/ROADMAP.md
+docs/design-brief.md
+docs/design-prompt.md
+docs/fluxo-elan.md
+docs/*.pdf
+dist/

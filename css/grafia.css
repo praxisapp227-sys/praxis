@@ -1,0 +1,43 @@
+/* grafia.css — posicionamento tipográfico das grafias (companheiro de grafia.js)
+ *
+ * Só ESTRUTURA: onde cada pedaço da cifra fica em relação à fundamental, em
+ * unidades relativas (em), pra escalar com qualquer tamanho de fonte.
+ * SEM cor e SEM família de fonte, que são do tema de quem usa: estilize
+ * `.grafia` (font-family, color, font-size) e o resto se posiciona sozinho.
+ *
+ *   compacta      empilha (6 sobre 9; 7 sobre 4)
+ *   chediak    tudo na linha, parênteses no mesmo corpo
+ *   jazz       sufixo sobrescrito, menor
+ *   realbook   fração de verdade, sem parênteses
+ */
+
+.grafia .stack { display: inline-block; text-align: center; font-size: .5em; line-height: .88; margin-left: .2em; }
+.grafia .stack > * { display: block; }            /* baseline = último dígito */
+.grafia.acc .stack { margin-left: .4em; }         /* fundamental com bemol/sustenido ocupa mais */
+
+.grafia .paren { display: inline-block; font-size: .54em; margin-left: .06em; transform: translateY(-.34em); }
+
+.grafia.chediak .suffix { font-size: 1em; }
+.grafia.chediak .paren { font-size: .82em; transform: none; }
+
+.grafia.jazz .suffix { font-size: .56em; vertical-align: .42em; letter-spacing: .01em; }
+.grafia.jazz .stack { font-size: .44em; }
+
+.grafia.realbook .suffix { font-size: .72em; margin-left: .04em; }
+.grafia.realbook .paren { display: none; }
+.grafia.realbook .frac { display: inline-flex; align-items: center; font-size: .68em; margin-left: .05em; }
+.grafia.realbook .frac .num { transform: translateY(-.16em); }
+.grafia.realbook .frac .bar { opacity: .7; margin: 0 -.01em; }
+.grafia.realbook .frac .den { transform: translateY(.16em); }
+
+/* Overlay tipográfico sobre o SVG do Verovio (foreignObject por cifra) */
+foreignObject.grafia-fo { overflow: visible; }
+.grafia-fo-inner { line-height: 1; white-space: nowrap; font-family: Edwin, Georgia, "Times New Roman", serif; }
+.grafia-fo-inner .grafia { display: inline-block; font-family: inherit; }
+
+/* Empilhamento vertical de tensões dentro do parêntese (chediak "estilo livro": maior em cima) */
+.grafia .paren .pcol { display: inline-flex; flex-direction: column; text-align: center; line-height: .84; }
+.grafia .paren .pcol > * { display: block; }
+/* Parênteses altos: envolvem a coluna inteira de tensões (não só a do meio); escalam pelo nº de linhas (--rows) */
+.grafia .paren.pstacked { display: inline-flex; align-items: center; vertical-align: middle; }
+.grafia .paren.pstacked .pbrace { font-weight: 400; line-height: .6; font-size: calc(var(--rows, 2) * 1.02em); }

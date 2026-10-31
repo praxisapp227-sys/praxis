@@ -1,0 +1,981 @@
+/* ==========================================================================
+   Praxis · folha de estilo
+   Linguagem visual "vidro claro" (direção 2b), tema claro e escuro em paridade.
+   Offline: nenhuma fonte, script ou imagem externa. Ícones são SVG inline.
+   Ganchos de JavaScript (id= e data-*) não são usados como seletor de estilo.
+   Convenção de tema mantida do protótipo:
+     :root                      = tema ESCURO (padrão do arquivo original)
+     :root[data-theme="light"]  = tema CLARO
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* superfície e ambiente */
+  --bg: #0b0e12;                 /* campo da janela */
+  --panel: #161b21;              /* superfície opaca principal */
+  --panel-2: #1d242b;            /* superfície opaca secundária, campos */
+  --panel-3: #252d35;            /* superfície opaca terciária, trilhos */
+  --line: #2a323a;               /* fio de separação */
+  --line-2: #38424c;             /* borda de controle */
+  --stage-bg: #1c1f26;           /* fundo dos módulos de mídia (vídeo/partitura invertida): chumbo, não preto puro */
+
+  /* texto */
+  --txt: #eef2f6;
+  --txt-dim: #9aa7b4;            /* rótulo, valor secundário */
+  --txt-faint: #77838f;          /* auxiliar, dica */
+
+  /* ação e semântica */
+  --accent: #5ab7ff;
+  --accent-soft: rgba(90,183,255,.14);
+  --accent-ring: rgba(90,183,255,.45);
+  --accent-2: #3ddc97;           /* confirmação */
+  --ok: #3ddc97;   --ok-soft: rgba(61,220,151,.14);
+  --danger: #ff8b80; --danger-soft: rgba(255,139,128,.13);
+  --work: #f0b429;  --work-soft: rgba(240,180,41,.14);
+
+  /* barras de rolagem internas (polegar sempre visível; trilho transparente) */
+  --sbar: #77838f; --sbar-hover: #9aa7b4;
+
+  /* canvas do gráfico (GCP): escuro no dark p/ preencher o módulo; branco no claro */
+  --gcp-canvas: #12161c;
+
+  /* vidro */
+  --glass: linear-gradient(152deg, rgba(255,255,255,.15), rgba(255,255,255,.05) 48%, rgba(255,255,255,.09));
+  --glass-2: rgba(255,255,255,.06);
+  --glass-br: rgba(255,255,255,.18);
+  --glass-blur: blur(30px) saturate(180%);
+  --glass-sh: 0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.30);
+
+  /* ambiente tingido, sempre atrás do vidro */
+  --wash:
+    radial-gradient(55% 45% at 16% 10%, rgba(0,114,178,.30), transparent 70%),
+    radial-gradient(50% 45% at 84% 80%, rgba(0,158,115,.18), transparent 72%),
+    radial-gradient(40% 35% at 66% 4%, rgba(204,121,167,.14), transparent 70%);
+
+  /* superfície de figura: idêntica nos dois temas, é o que sai no PNG e no SVG */
+  --sheet: #ffffff;
+  --sheet-txt: #14181d;
+  --sheet-dim: #5f6b78;
+  --sheet-faint: #8b97a3;
+  --sheet-line: #e5eaef;
+
+  /* elevação */
+  --shadow-1: 0 1px 4px rgba(0,0,0,.40);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.45);
+  --shadow-3: 0 30px 70px rgba(0,0,0,.60);
+  --shadow: var(--shadow-2);     /* token legado do protótipo */
+
+  /* raio */
+  --r-1: 8px; --r-2: 10px; --r-3: 12px; --r-4: 16px; --r-5: 22px; --r-6: 26px;
+  --r-pill: 999px;
+  --radius: var(--r-4);          /* token legado do protótipo */
+
+  /* espaçamento */
+  --s-1: 2px; --s-2: 4px; --s-3: 6px; --s-4: 8px; --s-5: 10px; --s-6: 12px;
+  --s-7: 14px; --s-8: 16px; --s-9: 20px; --s-10: 24px; --s-11: 32px; --s-12: 40px;
+
+  /* movimento */
+  --dur-1: 120ms; --dur-2: 180ms; --dur-3: 260ms;
+  --ease: cubic-bezier(.2,.6,.2,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+
+  /* tipografia */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text",
+          "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+               "Liberation Mono", monospace;
+
+  /* dimensões estruturais */
+  --rail-w: 66px;
+  --inspector-w: 312px;
+  --app-min-w: 1240px;
+
+  font-synthesis: none;
+}
+
+:root[data-theme="light"] {
+  --bg: #e9ecef;
+  --panel: #ffffff;
+  --panel-2: #f3f6f9;
+  --panel-3: #e9eef3;
+  --line: #e5eaef;
+  --line-2: #d3dae1;
+
+  --txt: #14181d;
+  --txt-dim: #5f6b78;
+  --txt-faint: #8b97a3;
+
+  --accent: #0a6fd8;
+  --accent-soft: rgba(10,111,216,.10);
+  --accent-ring: rgba(10,111,216,.35);
+  --accent-2: #0e7a4f;
+  --ok: #0e7a4f;   --ok-soft: rgba(14,122,79,.12);
+  --danger: #b3261e; --danger-soft: rgba(179,38,30,.10);
+  --work: #8a5a00;  --work-soft: rgba(138,90,0,.12);
+  --sbar: #8b97a3; --sbar-hover: #5f6b78;
+  --gcp-canvas: #ffffff;
+
+  --glass: linear-gradient(152deg, rgba(255,255,255,.80), rgba(255,255,255,.48) 48%, rgba(255,255,255,.64));
+  --glass-2: rgba(255,255,255,.42);
+  --glass-br: rgba(255,255,255,.86);
+  --glass-sh: 0 18px 46px rgba(40,50,70,.16), inset 0 1px 0 rgba(255,255,255,.95);
+
+  --wash:
+    radial-gradient(55% 45% at 16% 10%, rgba(0,114,178,.20), transparent 70%),
+    radial-gradient(50% 45% at 84% 80%, rgba(0,158,115,.15), transparent 72%),
+    radial-gradient(40% 35% at 66% 4%, rgba(230,159,0,.13), transparent 70%);
+
+  --shadow-1: 0 1px 4px rgba(30,40,60,.10);
+  --shadow-2: 0 2px 10px rgba(30,40,60,.10);
+  --shadow-3: 0 24px 60px rgba(30,40,60,.16);
+  --shadow: var(--shadow-2);
+}
+
+/* Paleta categórica Okabe-Ito. Funcional, não decorativa: não substituir. */
+:root {
+  --cat-1: #0072B2;  /* azul     */
+  --cat-2: #009E73;  /* verde    */
+  --cat-3: #E69F00;  /* âmbar    */
+  --cat-4: #CC79A7;  /* rosa     */
+  --cat-5: #56B4E9;  /* azul claro */
+  --cat-6: #D55E00;  /* vermelhão */
+  --cat-7: #F0E442;  /* amarelo  */
+  --cat-8: #000000;  /* preto    */
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body {
+  min-width: var(--app-min-w);
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow: auto;
+}
+
+/* ambiente tingido atrás de tudo */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0;
+  background: var(--wash); pointer-events: none;
+}
+body > * { position: relative; z-index: 1; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* foco de teclado: sempre o anel do sistema Praxis, nunca o do navegador */
+:focus { outline: none; }
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  border-radius: var(--r-1);
+}
+
+::selection { background: var(--accent-soft); }
+
+/* --------------------------------------------------------------------------
+   3. Tipografia
+   Papel                        tamanho / entrelinha / peso / tracking
+   -------------------------------------------------------------------------- */
+h1, .t-app     { font-size: 20px;   line-height: 1.2;  font-weight: 600; letter-spacing: -.3px; margin: 0; }
+h2, .t-screen  { font-size: 15px;   line-height: 1.3;  font-weight: 600; letter-spacing: -.2px; margin: 0; }
+h3, .t-group   { font-size: 11px;   line-height: 1.2;  font-weight: 700; letter-spacing: .4px;
+                 text-transform: uppercase; color: var(--txt-dim); margin: 0 0 var(--s-4); }
+.t-body        { font-size: 13px;   line-height: 1.45; font-weight: 400; }
+.t-strong      { font-size: 13px;   line-height: 1.45; font-weight: 600; }
+.t-data        { font-size: 12.5px; line-height: 1.4;  font-weight: 400; font-variant-numeric: tabular-nums; }
+.t-label       { font-size: 11px;   line-height: 1.35; font-weight: 400; color: var(--txt-dim); }
+.mini, .hint   { font-size: 11px;   line-height: 1.45; color: var(--txt-faint); }
+.t-micro       { font-size: 10.5px; line-height: 1.3;  color: var(--txt-faint); }
+.t-clock       { font-size: 21px;   line-height: 1;    font-weight: 600; letter-spacing: -.5px;
+                 font-variant-numeric: tabular-nums; }
+
+/* Todo número comparável usa algarismos tabulares: tempos, compassos,
+   durações, contagens, percentuais, dpi, ms. */
+.time, .t-num, table.segs td, table.segs th, .stat-table td,
+input[type="number"], .tabular { font-variant-numeric: tabular-nums; }
+
+code, kbd, .mono { font-family: var(--font-mono); }
+
+/* --------------------------------------------------------------------------
+   4. Vidro e superfícies
+   -------------------------------------------------------------------------- */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-br);
+  box-shadow: var(--glass-sh);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* superfície opaca de dado. Cartões, tabelas, listas. */
+.card {
+  background: var(--panel);
+  border: none;
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+}
+
+/* superfície de figura. Sempre branca, nos dois temas, porque é o que é exportado. */
+.sheet, #gcp-stages > * {
+  background: var(--sheet);
+  color: var(--sheet-txt);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+}
+/* Canvas do gráfico: escuro no dark, preenchendo o módulo (colunas não ficam sobre folha branca). */
+.chart-host, #gcp-chart {
+  background: var(--gcp-canvas);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-2);
+}
+[hidden] { display: none !important; }
+/* A UI da aba de Gráfico acompanha o estilo: no heatmap some o que é só do GCP e aparece o que é do heatmap. */
+#view-gcp .heat-only { display: none; }
+#view-gcp.heatmap-mode .heat-only { display: block; }
+#view-gcp.heatmap-mode .gcp-only { display: none !important; }
+/* Abas de gráficos: shape clássico de aba de navegador em VIDRO; a aba ATIVA se funde com o topo do
+   painel do gráfico logo abaixo (borda inferior sob a aba desaparece). Cor do conjunto = faixa no topo (--cj). */
+.gcp-tabs { display: flex; align-items: flex-end; gap: 3px; flex-wrap: wrap; padding-left: 0; position: relative; z-index: 1; margin-bottom: -33px; }   /* padding-left 0 = 1ª aba alinha com a esquerda do gráfico; -33 = cancela o gap:13 do .canvas-area + ~20px do fundo escondidos atrás do gráfico (> raio 16px do canto, senão a borda de baixo aparece no arredondamento) */
+.gcp-tab { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 8px 9px 24px 13px; border: 1px solid var(--glass-br); border-bottom: none; border-radius: 11px 11px 0 0; background: var(--glass-2); color: var(--txt-dim); cursor: pointer; font-size: 12.5px; line-height: 1; max-width: 220px; transition: background var(--dur-1) var(--ease); }
+.gcp-tab:hover { color: var(--txt); background: var(--glass); }
+.gcp-tab.active { color: var(--txt); background: var(--glass); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+.gcp-tab-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gcp-tab-name input { width: 130px; font: inherit; color: inherit; background: transparent; border: none; outline: none; }
+.gcp-tab-x { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; padding: 0; border: none; background: transparent; color: var(--txt-faint); cursor: pointer; border-radius: 4px; }
+.gcp-tab-x:hover { color: var(--txt); background: var(--glass-br); }
+.gcp-tab-x svg { width: 11px; height: 11px; }
+.gcp-tab-add { align-self: flex-end; display: inline-flex; align-items: center; justify-content: center; padding: 8px 11px 24px; margin-left: 3px; border: 1px solid var(--glass-br); border-bottom: none; border-radius: 11px 11px 0 0; background: var(--glass-2); color: var(--txt-dim); cursor: pointer; transition: background var(--dur-1) var(--ease); }   /* mesma estética/afundamento das abas */
+.gcp-tab-add:hover { color: var(--txt); background: var(--glass); }
+.gcp-tab-add svg { width: 13px; height: 13px; }
+.gcp-tabsep { flex: 0 0 12px; align-self: stretch; }   /* espaço entre conjuntos na barra de abas */
+.gcp-tab[draggable="true"] { cursor: grab; }
+.gcp-tab.drop-target { outline: 2px dashed var(--accent); outline-offset: -3px; }
+/* área do gráfico SEM frame/vidro: a aba de vidro conecta sem espaço e o gráfico fica POR CIMA dela (z-index 2 > abas 1) */
+.gcp-panel { position: relative; z-index: 2; margin-bottom: var(--s-4); }
+.gcp-menu { position: absolute; z-index: 60; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-3); box-shadow: var(--shadow); padding: 4px; min-width: 210px; }
+.gcp-menu button { display: block; width: 100%; text-align: left; padding: 7px 10px; border: 0; background: transparent; color: var(--txt); cursor: pointer; font: inherit; font-size: 12.5px; border-radius: 6px; }
+.gcp-menu button:hover { background: var(--glass-2); }
+/* Visualização em colunas (reflui os segmentos p/ usar o espaço horizontal) */
+.gcp-colwrap { display: flex; gap: 10px; overflow-x: auto; align-items: flex-start; }
+.gcp-col { flex: 0 0 auto; }
+.gcp-col svg { display: block; }
+/* Comparar lado a lado: dois gráficos em painéis de largura igual, cada um com sua própria rolagem. */
+.gcp-compare { display: flex; gap: 12px; align-items: flex-start; overflow: auto; }
+/* Cada painel do comparar é um CARD (bg + raio 16 + sombra) com título como cabeçalho interno. O gráfico
+   RE-RENDERIZA pra caber no card (nítido, sem esticar): largura sempre, e altura no heatmap; GCP rola. */
+.gcp-compare .cmp-panel { position: relative; flex: 0 0 auto; display: flex; flex-direction: column; background: var(--gcp-canvas); border-radius: var(--r-4); box-shadow: var(--shadow-2); overflow: hidden; min-width: 220px; min-height: 160px; }
+.gcp-compare .cmp-title { flex: 0 0 auto; font-weight: 600; font-size: 12px; color: var(--txt-dim); padding: 7px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gcp-compare .cmp-host { flex: 1 1 0; min-height: 0; overflow: auto; }
+.gcp-compare .cmp-host svg { display: block; }
+/* alças de resize do card: borda direita = largura, borda inferior = altura, canto = ambas */
+.gcp-compare .cmp-rz { position: absolute; z-index: 4; }
+.gcp-compare .cmp-rz-x { top: 0; right: 0; width: 8px; height: 100%; cursor: col-resize; }
+.gcp-compare .cmp-rz-y { left: 0; bottom: 0; width: 100%; height: 8px; cursor: row-resize; }
+.gcp-compare .cmp-rz-xy { right: 0; bottom: 0; width: 16px; height: 16px; cursor: nwse-resize; z-index: 5; }
+.gcp-compare .cmp-rz-x:hover, .gcp-compare .cmp-rz-y:hover { background: var(--accent-soft); }
+/* estatísticas comparadas (dois gráficos lado a lado) */
+/* Estatísticas do comparar: um único grid alinha rótulo + um valor por gráfico (linhas e seções alinhadas entre si). */
+.cmp-stats-grid { display: grid; grid-template-columns: minmax(120px, 1.3fr) 1fr 1fr; column-gap: 12px; row-gap: 3px; align-items: center; font-size: 12px; }
+.cmp-stats-grid .cmp-st-k { color: var(--txt); min-width: 0; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+.cmp-stats-grid .cmp-st-v { text-align: right; font-variant-numeric: tabular-nums; color: var(--txt-dim); min-width: 0; }
+.cmp-stats-grid .cmp-st-head { padding-bottom: 6px; border-bottom: 1px solid var(--line); margin-bottom: 2px; }
+.cmp-stats-grid .cmp-st-head.cmp-st-v { color: var(--txt); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmp-stats-grid .cmp-st-sec { grid-column: 1 / -1; font-weight: 700; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--txt-dim); margin-top: 12px; padding-bottom: 3px; border-bottom: 1px solid var(--line); }
+.cmp-stats-grid .cmp-st-na { opacity: .4; }
+/* config de eixo por lado no inspetor do comparar: menu colapsável "Configurar eixos" */
+.cmp-axis-fold { margin-top: 4px; }
+.cmp-axis-fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--txt-dim); padding: 3px 0; user-select: none; }
+.cmp-axis-fold > summary::-webkit-details-marker { display: none; }
+.cmp-axis-fold > summary .chev { margin-left: auto; display: inline-flex; transition: transform .15s ease; }
+.cmp-axis-fold[open] > summary .chev { transform: rotate(90deg); }
+.cmp-axis-fold[open] > summary { color: var(--txt); }
+.cmp-axis { margin-top: 4px; display: flex; flex-direction: column; gap: 6px; }
+.cmp-axf-row { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 11.5px; color: var(--txt-dim); }
+.cmp-axf-row span { flex: 1; min-width: 0; }
+.cmp-axf-row input { flex: 0 0 72px; width: 72px; }
+/* Seletor de 3 modos (eixo das colunas) */
+.seg3 { display: flex; border: 1px solid var(--line); border-radius: var(--r-3); overflow: hidden; }
+.seg3 button { flex: 1; padding: 6px 4px; border: 0; border-left: 1px solid var(--line); background: var(--panel); color: var(--txt-dim); cursor: pointer; font: inherit; font-size: 12px; }
+.seg3 button:first-child { border-left: 0; }
+.seg3 button:hover { color: var(--txt); }
+.seg3 button.active { background: var(--accent); color: #fff; }
+/* Sub-bloco agrupado (ex.: altura dos segmentos) */
+.subgroup { border: 1px solid var(--line); border-radius: var(--r-3); padding: 8px 10px; margin-bottom: 8px; }
+.subgroup-title { font-size: 11px; color: var(--txt-dim); margin-bottom: 6px; }
+.dimmed { opacity: .45; }
+.dimmed input { pointer-events: none; }
+.btn.active, .btn.secondary.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sheet .mini, .chart-host .mini { color: var(--sheet-dim); }
+.chart-host svg .grid { stroke: var(--sheet-line); }
+
+/* --------------------------------------------------------------------------
+   5. Estrutura
+   -------------------------------------------------------------------------- */
+.app { position: relative; height: 100vh; min-height: 760px; min-width: var(--app-min-w); overflow: hidden; }
+
+/* trilho vertical, substitui a barra de abas superior */
+.rail {
+  position: absolute; left: var(--s-8); top: var(--s-8); bottom: var(--s-8);
+  width: var(--rail-w); border-radius: var(--r-5); z-index: 5;
+  display: flex; flex-direction: column; align-items: center; gap: var(--s-4);
+  padding: var(--s-6) 0;
+}
+.rail-btn {
+  width: 48px; height: 48px; border: none; border-radius: var(--r-4);
+  background: transparent; cursor: pointer; color: var(--txt-dim);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  font-size: 8.5px; font-weight: 600;
+  transition: background var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
+}
+.rail-btn:hover { background: var(--glass-2); color: var(--txt); }
+.rail-btn[aria-current="page"], .rail-btn.active {
+  background: var(--panel); color: var(--accent); box-shadow: var(--shadow-2);
+}
+
+/* barra flutuante superior: transporte, estado, projeto */
+.hud {
+  position: absolute; left: calc(var(--rail-w) + var(--s-11)); right: var(--s-8); top: var(--s-8);
+  display: flex; align-items: center; gap: var(--s-5); z-index: 4;
+}
+.hud-capsule { display: flex; align-items: center; gap: var(--s-5); padding: 7px 14px 7px 7px; border-radius: var(--r-pill); flex: 0 0 auto; }
+
+/* painel de trabalho */
+.workspace {
+  position: absolute; left: calc(var(--rail-w) + var(--s-11)); right: var(--s-8);
+  top: 76px; bottom: var(--s-8);
+  border-radius: var(--r-6); overflow: hidden; display: flex;
+  border: 1px solid var(--glass-br);   /* moldura da área de trabalho (mesmo token do border-left do inspetor) */
+}
+.canvas-area { flex: 1; min-width: 0; padding: var(--s-8) 18px; display: flex; flex-direction: column; gap: 13px; overflow: hidden; }
+/* Segmentar não usa o HUD flutuante, então recupera a faixa reservada no topo: os painéis (centro + inspetor)
+   sobem para ocupar a altura livre. As outras abas mantêm o topo em 76px para o HUD. */
+#view-segmentar.workspace { top: var(--s-8); }
+
+/* inspetor à direita, substitui a barra lateral esquerda */
+.sidebar, .inspector {
+  width: var(--inspector-w); flex: none;
+  border-left: 1px solid var(--glass-br);
+  background: var(--glass-2);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  padding: var(--s-7) var(--s-7) var(--s-8);
+  overflow: auto; display: flex; flex-direction: column; gap: var(--s-5);
+}
+
+/* grupo colapsável do inspetor. Barra inteira clicável; seta à esquerda; estado aberto realçado. */
+.group { margin: 0; }
+.group > summary,
+.group > h3 {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 34px; padding: 0 10px; border-radius: 10px;
+  font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase;
+  color: var(--txt-dim); cursor: pointer; list-style: none;
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary:hover { background: var(--glass-2); color: var(--txt); }
+.group[open] > summary { color: var(--txt); }
+.group .chev { order: -1; color: var(--txt-dim); transition: transform var(--dur-2) var(--ease), color var(--dur-1) var(--ease); }
+.group[open] > summary .chev { transform: rotate(90deg); color: var(--accent); }
+.group-body { border-radius: var(--r-3); background: var(--panel); box-shadow: var(--shadow-2); padding: var(--s-6); margin-top: 6px; }
+
+/* --------------------------------------------------------------------------
+   Barras de rolagem internas (polegar sempre visível, trilho transparente).
+   Um mecanismo por motor: WebKit pelos pseudo-elementos; Firefox só onde eles
+   não existem (senão o Chromium descarta o bloco ::-webkit-scrollbar inteiro).
+   -------------------------------------------------------------------------- */
+.px-scroll { overscroll-behavior: contain; }
+.px-scroll::-webkit-scrollbar { width: 10px; height: 10px; background: transparent; }
+.px-scroll::-webkit-scrollbar-track { background: transparent; }
+.px-scroll::-webkit-scrollbar-corner { background: transparent; }
+.px-scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.px-scroll::-webkit-scrollbar-thumb { background: var(--sbar); border: 2px solid transparent; background-clip: padding-box; border-radius: 999px; transition: background var(--dur-1) var(--ease); }
+.px-scroll:hover::-webkit-scrollbar-thumb, .px-scroll::-webkit-scrollbar-thumb:hover { background: var(--sbar-hover); background-clip: padding-box; }
+.px-scroll::-webkit-scrollbar-thumb:active { background: var(--accent); background-clip: padding-box; }
+#seg-listhost, #tr-list { scrollbar-gutter: stable; }
+/* folha branca (partitura): barra de superfície clara nos dois temas */
+.score-render::-webkit-scrollbar-thumb { background: #8b97a3; background-clip: padding-box; }
+.score-render:hover::-webkit-scrollbar-thumb { background: #5f6b78; background-clip: padding-box; }
+@supports not selector(::-webkit-scrollbar) {
+  .px-scroll { scrollbar-width: thin; scrollbar-color: var(--sbar) transparent; }
+  .score-render { scrollbar-color: #8b97a3 transparent; }
+}
+
+/* --------------------------------------------------------------------------
+   Painel direito (inspetor) colapsável.
+   -------------------------------------------------------------------------- */
+.sidebar.inspector { position: relative; transition: width var(--dur-3) var(--ease-out); }
+.insp-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 0 4px 2px; }
+.insp-title { font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--txt-dim); }
+.insp-strip { display: none; }
+.sidebar.inspector.collapsed { width: 14px; min-width: 14px; padding: 0; overflow: hidden; }
+.sidebar.inspector.collapsed:hover { width: 18px; }
+.sidebar.inspector.collapsed > * { display: none; }
+.sidebar.inspector.collapsed > .insp-strip {
+  display: flex; align-items: center; justify-content: center; flex: 1; width: 100%;
+  border: none; padding: 0; cursor: pointer; background: var(--glass-2);
+  border-radius: 8px 0 0 8px; transition: background var(--dur-1) var(--ease);
+}
+.insp-strip .insp-handle { width: 2px; height: 26px; border-radius: 2px; background: var(--txt-dim); transition: background var(--dur-1) var(--ease); }
+.sidebar.inspector.collapsed > .insp-strip:hover { background: var(--accent-soft); }
+.sidebar.inspector.collapsed > .insp-strip:hover .insp-handle { background: var(--accent); }
+.insp-collapse { flex: 0 0 auto; }
+
+/* --------------------------------------------------------------------------
+   6. Controles
+   -------------------------------------------------------------------------- */
+.btn {
+  padding: 8px 16px; border: none; border-radius: var(--r-3);
+  background: var(--accent); color: #fff; font-weight: 600; font-size: 12.5px;
+  cursor: pointer; box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 24%, transparent);
+  transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.btn:hover { background: color-mix(in srgb, var(--accent) 86%, #000); }
+.btn:active { background: color-mix(in srgb, var(--accent) 76%, #000); transform: translateY(1px); }
+.btn:focus-visible { box-shadow: 0 0 0 3px var(--accent-ring), 0 0 0 5px var(--panel); }
+.btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn.wide { width: 100%; }
+
+.btn.secondary {
+  background: var(--panel-2); color: var(--txt); font-weight: 500;
+  border: 1px solid var(--line-2); box-shadow: none;
+}
+.btn.secondary:hover { background: var(--panel-3); }
+.btn.secondary:active { background: var(--panel-3); transform: translateY(1px); }
+
+.btn.ghost {
+  background: transparent; color: var(--txt-dim); font-weight: 500;
+  border: 1px dashed var(--line-2); box-shadow: none;
+}
+.btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.btn.sm { padding: 4px 10px; border-radius: var(--r-1); font-size: 11.5px; font-weight: 500; }
+
+/* botão só de ícone */
+.icon-btn {
+  width: 30px; height: 30px; border: none; border-radius: var(--r-2);
+  background: var(--glass-2); color: var(--txt-dim); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.icon-btn:hover { background: var(--panel-3); color: var(--txt); }
+.icon-btn svg { width: 14px; height: 14px; }
+
+/* controle segmentado, usado em camada ativa e velocidade */
+.segmented { display: flex; gap: 2px; padding: 3px; border-radius: var(--r-3); background: var(--glass-2); }
+.segmented > button {
+  padding: 5px 13px; border: none; border-radius: 9px; background: transparent;
+  color: var(--txt-dim); font-size: 12px; cursor: pointer;
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.segmented > button:hover { color: var(--txt); }
+.segmented > button.active,
+.segmented > button[aria-selected="true"] {
+  background: var(--panel); color: var(--txt); font-weight: 600; box-shadow: var(--shadow-1);
+}
+
+/* campos */
+.field { margin-bottom: var(--s-6); }
+.field label { display: block; font-size: 11px; color: var(--txt-dim); margin-bottom: 5px; }
+.field input[type="text"], .field input[type="number"], .field input:not([type]), .field select, .field textarea,
+input[type="text"], input[type="number"], input:not([type]), select, textarea {
+  width: 100%; padding: 7px 10px; border-radius: var(--r-2);
+  border: 1px solid var(--line-2); background: var(--panel-2); color: var(--txt);
+  font-size: 12.5px;
+  transition: border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
+}
+input:hover, select:hover, textarea:hover { border-color: var(--txt-faint); }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent); border-width: 1.5px; background: var(--panel);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+input[aria-invalid="true"], .is-error input, input.error {
+  border-color: var(--danger); border-width: 1.5px; background: var(--danger-soft);
+}
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--panel-3); border-color: var(--line); opacity: .55; cursor: not-allowed;
+}
+textarea { line-height: 1.5; resize: vertical; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="color"] {
+  width: 34px; height: 32px; padding: 0; border-radius: 9px;
+  border: 1px solid var(--line-2); background: none; cursor: pointer;
+}
+
+/* linha de controles */
+.row { display: flex; gap: var(--s-4); align-items: center; }
+.row > * { flex: 1; }
+.row > .flex-none { flex: 0 0 auto; }
+
+/* alternador */
+.switch { width: 36px; height: 21px; border-radius: var(--r-pill); background: var(--panel-3); position: relative; flex: none; cursor: pointer; transition: background var(--dur-2) var(--ease); }
+.switch::after { content: ""; position: absolute; left: 2px; top: 2px; width: 17px; height: 17px; border-radius: var(--r-pill); background: var(--panel); box-shadow: var(--shadow-1); transition: transform var(--dur-2) var(--ease-out); }
+.switch[aria-checked="true"], input:checked + .switch { background: var(--accent); }
+.switch[aria-checked="true"]::after, input:checked + .switch::after { transform: translateX(15px); background: #fff; }
+
+/* etiqueta de código e de camada */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--r-pill);
+  background: var(--panel-2); border: none; font-size: 11.5px; cursor: pointer;
+  transition: box-shadow var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease);
+}
+.pill:hover { box-shadow: 0 0 0 1px var(--line-2); }
+.pill.active, .pill[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
+.pill.hidden-code { opacity: .45; text-decoration: line-through; }
+.swatch { width: 9px; height: 9px; border-radius: 3px; display: inline-block; flex: none; }
+.tag-b { font-weight: 700; padding: 1px 7px; border-radius: var(--r-1); font-size: 11px; }
+
+/* tecla */
+kbd {
+  display: inline-block; min-width: 26px; text-align: center;
+  padding: 2px 7px; border-radius: 6px; font-size: 10.5px; font-family: var(--font);
+  background: var(--panel-2); border: 1px solid var(--line-2); border-bottom-width: 2px; color: var(--txt);
+}
+
+/* --------------------------------------------------------------------------
+   7. Barra de estado
+   -------------------------------------------------------------------------- */
+.status {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 15px; border-radius: var(--r-pill);
+  background: var(--glass-2); border: 1px solid var(--line-2);
+  font-size: 12.5px; color: var(--txt-dim);
+}
+.status::before { content: ""; width: 7px; height: 7px; border-radius: var(--r-pill); background: var(--txt-faint); flex: none; }
+.status.ok   { background: var(--ok-soft);     border-color: var(--ok);     color: var(--ok); }
+.status.ok::before   { background: var(--ok); }
+.status.err  { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+.status.err::before  { background: var(--danger); }
+.status.work { background: var(--work-soft);   border-color: var(--work);   color: var(--work); }
+.status.work::before { background: var(--work); }
+.status .progress { width: 120px; height: 4px; border-radius: var(--r-pill); background: var(--panel-3); overflow: hidden; }
+.status .progress > span { display: block; height: 100%; background: currentColor; }
+
+/* estado contextual em destaque, usado com segmento em aberto */
+.status.live { background: var(--accent-soft); border-color: var(--accent); color: var(--txt); }
+.status.live::before { background: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   8. Mídia, transporte e timeline
+   -------------------------------------------------------------------------- */
+.dropzone {
+  border: 1.5px dashed var(--line-2); border-radius: var(--r-3);
+  padding: var(--s-7) var(--s-6); text-align: center; color: var(--txt-dim);
+  font-size: 11.5px; cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease), background var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
+}
+.dropzone:hover, .dropzone.hover { border-color: var(--accent); background: var(--accent-soft); color: var(--txt); }
+
+.player-wrap { background: var(--stage-bg); border-radius: var(--r-4); overflow: hidden; position: relative; }
+/* No modo claro o fundo do player é branco (o chumbo é só do escuro). Não mexe no --stage-bg global, que também
+   é o fundo da partitura invertida - essa continua escura nos dois temas. */
+:root[data-theme="light"] .player-wrap { background: #fff; }
+.player-wrap video, .player-wrap audio { width: 100%; display: block; }
+.audio-only { padding: var(--s-10); text-align: center; color: var(--txt-dim); }
+
+.transport { display: flex; align-items: center; gap: var(--s-5); flex-wrap: wrap; }
+.speedbtns { display: flex; gap: 2px; padding: 2px; border-radius: 11px; background: var(--glass-2); }
+.speedbtns button { padding: 4px 8px; border: none; border-radius: 9px; background: transparent; color: var(--txt-dim); font-size: 11px; cursor: pointer; }
+.speedbtns button.active { background: var(--panel); color: var(--txt); font-weight: 600; box-shadow: var(--shadow-1); }
+.time { color: var(--txt-dim); }
+
+.timeline-toolbar { display: flex; align-items: center; gap: var(--s-3); }
+#seg-timeline { border-radius: var(--r-3); overflow: hidden; }
+.tl-playhead { width: 2px; background: var(--accent); }
+.tl-segment { border-radius: 4px; }
+.tl-segment.active { outline: 2px solid var(--txt); outline-offset: 1px; }
+
+/* --------------------------------------------------------------------------
+   9. Tabelas densas e listas
+   -------------------------------------------------------------------------- */
+table.segs { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.segs th {
+  position: sticky; top: 0; z-index: 1;
+  text-align: left; padding: 8px 16px; background: var(--panel);
+  font-size: 10.5px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+  color: var(--txt-dim);
+}
+table.segs td { padding: 7px 16px; border-top: 1px solid var(--line); }
+table.segs tbody tr:hover { background: var(--panel-2); }
+table.segs tbody tr.active,
+table.segs tbody tr[aria-selected="true"] { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+table.segs td .mini { color: var(--txt-faint); }
+table.segs .locked svg { color: var(--txt-dim); }
+
+/* lista de transcrição */
+.tr-row { display: flex; gap: var(--s-5); align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--line); }
+.tr-row:hover { background: var(--panel-2); }
+.tr-row.active { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.tr-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@keyframes praxis-pulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+.prog-pulse { animation: praxis-pulse 1s ease-in-out infinite; }
+@keyframes praxis-indet { 0% { background-position: -35% 0; } 100% { background-position: 135% 0; } }
+.prog-indet {
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%) !important;
+  background-size: 40% 100% !important; background-repeat: no-repeat !important;
+  animation: praxis-indet 1.15s ease-in-out infinite;
+}
+.icon-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+/* Partitura (Verovio) ao lado do vídeo na aba ① */
+@font-face { font-family:'Edwin'; font-weight:normal; font-style:normal; src:url('../vendor/fonts/Edwin-Roman.otf') format('opentype'); }
+@font-face { font-family:'Edwin'; font-weight:bold;   font-style:normal; src:url('../vendor/fonts/Edwin-Bold.otf') format('opentype'); }
+@font-face { font-family:'Edwin'; font-weight:normal; font-style:italic; src:url('../vendor/fonts/Edwin-Italic.otf') format('opentype'); }
+@font-face { font-family:'Edwin'; font-weight:bold;   font-style:italic; src:url('../vendor/fonts/Edwin-BdIta.otf') format('opentype'); }
+.seg-stage-card { display:flex; flex-direction:column; }
+.seg-stage { display:flex; gap:12px; align-items:stretch; }
+.seg-stage .player-wrap { flex:0 0 420px; max-width:420px; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+/* Centralização pela margem do filho (não pelo container): ampliado, margin:auto vira 0 e o overflow de cima/esquerda
+   fica alcançável ao rolar (centralizar no flex deixaria esse lado fora da área rolável). */
+.player-content { flex:0 0 auto; min-height:0; height:var(--stage-h,320px); overflow:auto; display:flex; }
+.player-content > * { margin:auto; }
+/* Painel minimizado: sai da fileira por completo (vira uma barra na lista do topo) */
+.seg-stage .player-wrap.media-hidden { display:none; }
+.score-pane { flex:1 1 0; min-width:0; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+.score-toolbar { display:flex; align-items:center; gap:8px; padding:6px 8px; border-bottom:1px solid var(--line); background:var(--panel-2); }
+.score-render { flex:0 0 auto; min-height:0; height:var(--stage-h,320px); overflow:auto; background:#ffffff; padding:10px; }
+.score-render svg { max-width:none; height:auto; }
+/* Palco da Segmentar como BLOCOS: colunas de módulos empilháveis, com resizers entre colunas e entre módulos.
+   Cada módulo (vídeo/partitura/gráfico) é um .stage-pane; o corpo (.pane-body) preenche a altura do bloco. */
+.seg-stage { display:flex; align-items:stretch; gap:0; height:var(--stage-h,320px); flex-wrap:nowrap; }
+.stage-col { display:flex; flex-direction:column; min-width:40px; min-height:0; }
+.stage-subrow { display:flex; flex-direction:row; align-items:stretch; min-width:0; min-height:0; }   /* item de coluna que é uma linha de painéis lado a lado (layout em banda) */
+.stage-pane { min-width:0; min-height:0; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+.stage-pane .pane-body { flex:1 1 0 !important; min-height:0 !important; height:auto !important; overflow:auto; }
+.gcpseg-pane .gcpseg-render { background:var(--gcp-canvas); position:relative; }
+.gcpseg-render svg { display:block; }
+#seg-gcp-host rect.seg-gcp-cur { stroke: var(--accent, #5ab7ff) !important; stroke-width: 2.2 !important; }
+/* Grid de célula única: svg + eixos congelados + faixa + leitura sobrepostos na mesma célula.
+   Os eixos e a leitura usam position:sticky → o COMPOSITOR os prende ao frame do módulo junto com o
+   scroll, sem o lag de reposicionar via JS no evento de scroll (que desalinhava e deixava o gráfico
+   aparecer por baixo do eixo). */
+.seg-gcp-grid { display:grid; position:relative; width:max-content; }
+.seg-gcp-grid > * { grid-column:1; grid-row:1; }
+.seg-gcp-grid > svg { position:relative; z-index:0; }
+.seg-gcp-gutter, .seg-gcp-ruler { position:sticky; z-index:5; overflow:hidden; pointer-events:none; }
+.seg-gcp-gutter { left:0; align-self:stretch; justify-self:start; }   /* coluna de segmentos: presa à esquerda, rola na vertical */
+.seg-gcp-ruler { justify-self:stretch; }                              /* régua de compassos: rola na horizontal, presa na vertical */
+.seg-gcp-ruler.axis-bottom { bottom:0; align-self:end; }
+.seg-gcp-ruler.axis-top { top:0; align-self:start; }
+/* faixa de ênfase: banda horizontal atrás do segmento sob a agulha, cobre TODA a largura do conteúdo (a largura é setada no JS), opacidade baixa; rola COM o conteúdo (presa a uma linha) */
+.seg-gcp-band { position:absolute; left:0; background:var(--accent,#5ab7ff); opacity:.16; pointer-events:none; border-radius:2px; }
+/* leitura no canto: compasso e segmento sempre visíveis; sticky prende ao canto do frame sem lag */
+.seg-gcp-readout { position:sticky; top:4px; left:4px; align-self:start; justify-self:start; z-index:7; pointer-events:none; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:2px 7px; font-size:11px; font-weight:600; color:var(--txt); box-shadow:var(--shadow-2); white-space:nowrap; }
+.stage-colsizer { flex:0 0 7px; align-self:stretch; cursor:col-resize; border-radius:3px; }
+.stage-colsizer:hover, .stage-colsizer.dragging { background:var(--line-2); }
+.stage-panesizer { flex:0 0 7px; cursor:row-resize; border-radius:3px; margin:2px 0; }
+.stage-panesizer:hover, .stage-panesizer.dragging { background:var(--line-2); }
+.seg-stage { position: relative; }
+.seg-stage .mod-off { display:none !important; }
+/* prévia do arrasto: um "fantasma" translúcido mostrando exatamente onde o módulo vai cair */
+.stage-dropghost { position:absolute; background:var(--accent,#5ab7ff); opacity:.24; pointer-events:none; border-radius:6px; z-index:6; box-shadow:0 0 0 2px var(--accent,#5ab7ff); }
+/* seletor de layout (presets) nos módulos de visualização: prévia SVG + ciclo */
+.mod-preset { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+.mod-preset-view { flex:1 1 auto; display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 4px; border:1px solid var(--line); border-radius:8px; cursor:pointer; color:var(--txt-dim); }
+.mod-preset-view:hover { border-color:var(--accent); color:var(--txt); }
+.mod-preset > .icon-btn { flex:0 0 auto; font-size:17px; line-height:1; }
+/* Partitura invertida: fundo chumbo + TUDO que é pintado em branco (pautas, hastes, cifras, notas).
+   Inverte só o SVG EXTERNO (`> svg`): o Verovio aninha um <svg definition-scale> dentro, e casar `svg`
+   solto inverteria duas vezes (voltaria ao preto). O fundo do SVG é transparente → mostra o chumbo. */
+.score-render.inverted { background: var(--stage-bg); color: #eef1f4; }
+.score-render.inverted > svg { filter: invert(1); }
+.score-render.inverted .score-hl { filter: invert(1); }   /* re-inverte o realce → mantém a cor de acento */
+.score-hl { fill: var(--accent-soft, rgba(79,157,245,.22)); stroke: var(--accent); stroke-width:1.5; pointer-events:none; }
+/* Modo de codificação por clique: mira sobre a partitura e realce das notas/pausas escolhidas (início=acento, fim=ok).
+   Desliga a seleção de texto (senão um clique longo tenta selecionar a cifra e o navegador abre sugestões). */
+.score-render.score-pick, .score-render.score-pick * { cursor: crosshair; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.score-render.score-pick g.note, .score-render.score-pick g.rest, .score-render.score-pick g.chord { cursor: pointer; }
+.score-render g.pick-start, .score-render g.pick-start * { fill: var(--accent, #5ab7ff) !important; stroke: var(--accent, #5ab7ff) !important; }
+.score-render g.pick-end, .score-render g.pick-end * { fill: var(--ok, #3ddc97) !important; stroke: var(--ok, #3ddc97) !important; }
+/* Partitura recolhida: sai da fileira (vira barra no topo) e o vídeo passa a ocupar toda a largura
+   (o vídeo tem largura fixa via resizer; sem a partitura ele deve preencher, não ficar colado à esquerda) */
+.seg-stage.score-collapsed .score-pane { display:none; }
+.seg-stage.score-collapsed .player-wrap { flex:1 1 auto !important; max-width:none !important; }
+/* Some o divisor quando um dos lados está recolhido (não há o que redimensionar) */
+.seg-stage.score-collapsed .col-resizer,
+.seg-stage .player-wrap.media-hidden + .col-resizer { display:none; }
+@media (max-width:900px){ .seg-stage { flex-direction:column; } .seg-stage .player-wrap { flex:0 0 auto; max-width:none; } }
+
+/* Lista de painéis minimizados (barras finas no topo: título + mostrar) */
+.seg-collapsed-list { display:flex; flex-direction:column; gap:3px; margin-bottom:6px; }
+.seg-collapsed-list:empty { display:none; }
+.collapsed-bar { display:flex; align-items:center; gap:7px; padding:2px 9px; border:1px solid var(--line); border-radius:6px; background:var(--panel-2); cursor:pointer; transition:background var(--dur-2,.18s) ease; }
+.collapsed-bar:hover { background:var(--panel-3); }
+.collapsed-bar .cb-title { flex:1; font-weight:600; font-size:11.5px; color:var(--txt-dim); }
+.collapsed-bar:hover .cb-title { color:var(--txt); }
+.collapsed-bar .cb-eye { display:flex; color:var(--txt-faint); }
+.collapsed-bar:hover .cb-eye { color:var(--txt-dim); }
+.collapsed-bar svg { width:13px; height:13px; }
+
+/* Cabeçalho como alça de reordenação (arrastar o painel para trocar de lado) */
+.seg-stage .score-toolbar { cursor:grab; }
+.seg-stage .score-toolbar .icon-btn, .seg-stage .score-toolbar button, .seg-stage .score-toolbar input, .seg-stage .score-toolbar select { cursor:default; }
+.seg-stage .pane-dragging { opacity:.55; }
+.seg-stage .pane-drop-target { outline:2px dashed var(--accent); outline-offset:-2px; }
+.rail-lastsaved { font-size: 9.5px; text-align: center; color: var(--txt-faint); line-height: 1.2; margin: 2px 0; min-height: 11px; }
+/* Transporte integrado na timeline (substitui o player nativo do áudio) */
+.tl-transport { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; }
+.tl-transport .tl-time { font-size: 12.5px; color: var(--txt-dim); font-variant-numeric: tabular-nums; }
+.tl-transport .tl-time .t-clock { color: var(--txt); }
+/* Player de áudio: sem a barra nativa (o transporte + a onda controlam). O de vídeo mantém a imagem. */
+.player-wrap audio { display: none; }
+/* Com vídeo acompanhante, o painel mostra só o vídeo (esconde o nome do arquivo de áudio) */
+.player-content video ~ .audio-only { display: none; }
+/* Agulha (playhead): atravessa régua + onda + camadas, com cabeça arrastável.
+   Linha e cabeça centradas no MESMO ponto (o `left` do container) para não desalinhar. */
+.tl-playhead { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; left: 0; z-index: 6; }
+.tl-playhead-line { position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: var(--accent-2); }
+.tl-playhead-head { position: absolute; top: -1px; left: -6px; width: 12px; height: 11px; background: var(--accent-2); border-radius: 3px 3px 7px 7px; pointer-events: auto; cursor: ew-resize; box-shadow: 0 1px 2px rgba(0,0,0,.35); }
+/* Faixa "segmento aberto" (Enter marcou o início e aguarda o fim): fill âmbar do início até a agulha (acompanha os dois lados) */
+.tl-pending { position: absolute; top: 0; bottom: 0; background: rgba(230,159,0,.16); pointer-events: none; display: none; z-index: 5; }
+/* Marcador do INÍCIO (fixo no ponto marcado, independente da direção do fim): linha vertical + bolinha pulsante no topo */
+.tl-pending-dot { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #e69f00; pointer-events: none; display: none; z-index: 6; }
+.tl-pending-dot::before { content: ""; position: absolute; top: 0; left: -4px; width: 9px; height: 9px; border-radius: 50%; background: #e69f00; animation: tl-pending-pulse 1.2s infinite; }
+@keyframes tl-pending-pulse { 0% { box-shadow: 0 0 0 0 rgba(230,159,0,.55); } 70% { box-shadow: 0 0 0 7px rgba(230,159,0,0); } 100% { box-shadow: 0 0 0 0 rgba(230,159,0,0); } }
+/* Guia da ferramenta blade: linha vertical tracejada seguindo o cursor; fica vermelha/sólida sobre um segmento cortável */
+.tl-blade-guide { position: absolute; top: 0; bottom: 0; width: 0; margin-left: -1px; border-left: 1px dashed rgba(226,85,79,.6); pointer-events: none; display: none; z-index: 6; }
+.tl-blade-guide.armed { border-left-style: solid; border-left-color: #e2554f; }
+.tl-blade-guide.armed::before { content: ""; position: absolute; top: -1px; left: -5px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #e2554f; }
+/* Botão de toolbar em estado ativo (ferramenta blade ligada) */
+.btn.sm.secondary.active { background: #e2554f; border-color: #e2554f; color: #fff; }
+/* Indicador de segmento aberto no transporte: só a bolinha pulsante + texto (sem caixa) */
+.seg-pending-badge { display: none; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #a06e00; white-space: nowrap; }
+.seg-pending-badge.on { display: inline-flex; }
+.seg-pending-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #e69f00; animation: tl-pending-pulse 1.2s infinite; }
+/* Minimapa (visão geral do arquivo inteiro) */
+.tl-overview { position: relative; margin: 0 0 6px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.tl-ov-window { position: absolute; top: 0; bottom: 0; background: rgba(79,157,245,.16); border: 1px solid var(--accent); border-radius: 3px; box-sizing: border-box; pointer-events: none; }
+.tl-ov-playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; left: -10px; background: var(--accent-2); pointer-events: none; }
+/* Linhas de camada (Camadas): o nome encolhe com reticências para os botões não vazarem a borda */
+#seg-tiers .row, #tr-tiers .row { overflow: hidden; }
+#seg-tiers .row > b, #tr-tiers .row > b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#seg-tiers .row .pill, #tr-tiers .row .pill, #seg-tiers .row .btn, #tr-tiers .row .btn { flex: 0 0 auto; }
+/* Modo iniciante vs avançado da toolbar da timeline */
+#tl-card:not(.advanced) .adv-only { display: none !important; }
+.tl-mode { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; margin-left: auto; }
+.tl-mode-lab { font-size: 10.5px; color: var(--txt-faint); }
+.tl-switch { position: relative; display: inline-block; width: 30px; height: 16px; flex: 0 0 auto; }
+.tl-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.tl-switch-slider { position: absolute; inset: 0; background: var(--line-2); border-radius: 999px; transition: background var(--dur-2, .18s) ease; }
+.tl-switch-slider::before { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; background: #fff; border-radius: 50%; transition: transform var(--dur-2, .18s) ease; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+.tl-switch input:checked + .tl-switch-slider { background: var(--accent); }
+.tl-switch input:checked + .tl-switch-slider::before { transform: translateX(14px); }
+/* Toolbar + transporte na mesma faixa; o toggle iniciante/avançado sempre encostado à direita */
+.tl-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 8px; }
+#tl-card:not(.advanced) .chart-toolbar { margin-bottom: 0 !important; }
+#tl-card.advanced .chart-toolbar { flex: 1 1 100%; }   /* avançado: toolbar toma a linha inteira; transporte + toggle na de baixo */
+#tl-card:not(.advanced) .tl-spacer { display: none; }
+#tl-card:not(.advanced) .tl-transport { margin: 0; }
+/* Splitter horizontal (vídeo ↔ partitura) e resize vertical dos módulos */
+.col-resizer { flex: 0 0 6px; align-self: stretch; cursor: col-resize; border-radius: 3px; background: transparent; }
+.col-resizer:hover { background: var(--line-2); }
+/* Divisor horizontal (altura do vídeo + partitura juntos): arrasta para cima/baixo */
+.stage-vresizer { height: 9px; margin-top: 5px; cursor: row-resize; border-radius: 3px; background: transparent; transition: background var(--dur-2,.18s) ease; }
+.stage-vresizer:hover { background: var(--line-2); }
+.stage-vresizer::before { content: ""; display: block; width: 44px; height: 3px; margin: 3px auto; border-radius: 2px; background: var(--line-2); }
+#seg-listhost { resize: vertical; }
+/* Botão Página/Display da partitura: ícone + rótulo, largura automática */
+.score-view-btn { width: auto; padding: 0 8px; gap: 5px; flex: 0 0 auto; }
+.score-view-lab { font-size: 11px; font-weight: 600; }
+/* Anotação sob a agulha (segue a playhead): realce distinto da seleção */
+.segs tr.now > td { background: rgba(79,157,245,.20); }
+.segs tr.now > td:first-child { box-shadow: inset 3px 0 0 var(--accent-2); }
+/* Segmentos selecionados (seleção múltipla) na lista */
+.segs tr.selms > td { background: rgba(79,157,245,.09); }
+.segs tr.selms > td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+
+/* Modal de configurações + editor de atalhos */
+.modal-overlay { position: fixed; inset: 0; background: rgba(10,14,20,.55); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-overlay[hidden] { display: none; }
+.modal-card { width: min(560px, 92vw); max-height: 82vh; display: flex; flex-direction: column; border: 1px solid var(--line-2); border-radius: 14px; background: var(--panel); box-shadow: var(--shadow-3); overflow: hidden; }
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.modal-body { overflow: auto; }
+
+/* Color picker widget (hex + paletas de atalho: Praxis geral e Okabe-Ito) */
+.cp { display: inline-flex; }
+.cp-btn { width: 28px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.cp.cp-sm { display: inline-flex; vertical-align: middle; }
+.cp.cp-sm .cp-btn { width: 15px; height: 15px; border-radius: 3px; }
+.cp-pop { position: fixed; z-index: 1200; width: 208px; padding: 10px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--panel); box-shadow: var(--shadow-3); }
+.cp-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+.cp-row .cp-native { width: 34px; height: 28px; flex: 0 0 34px; padding: 0; border: 1px solid var(--line); border-radius: 6px; }
+.cp-row .cp-hex { flex: 1; min-width: 0; font-family: ui-monospace, "Cascadia Code", monospace; text-transform: lowercase; }
+.cp-pal-t { font-size: 11px; color: var(--txt-faint); font-weight: 600; margin: 6px 0 3px; }
+.cp-pal { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.cp-sw { height: 18px; border: 1px solid rgba(255,255,255,.15); border-radius: 4px; cursor: pointer; padding: 0; }
+.cp-sw:hover { outline: 2px solid var(--accent); outline-offset: 1px; }
+:root[data-theme="light"] .cp-sw { border-color: rgba(0,0,0,.12); }
+
+/* Modal de mídia do projeto (importar / localizar / trocar). Escopado em #media-modal; classes mm- para não colidir. */
+#media-modal { position: fixed; inset: 0; z-index: 1100; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(6,8,11,.62); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+:root[data-theme="light"] #media-modal { background: rgba(120,132,148,.34); }
+#media-modal .mm-card { width: min(520px, 100%); max-height: 90vh; display: flex; flex-direction: column; border-radius: 16px; background: var(--glass); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-br); box-shadow: var(--glass-sh); color: var(--txt); overflow: hidden; }
+#media-modal .mm-head { position: relative; padding: 20px 22px 0; flex: 0 0 auto; }
+#media-modal .mm-title { font-size: 17px; line-height: 1.3; font-weight: 600; letter-spacing: -.2px; }
+#media-modal.has-x .mm-title { padding-right: 34px; }
+#media-modal .mm-x { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; padding: 0; }
+#media-modal .mm-x svg { width: 15px; height: 15px; }
+#media-modal .mm-x:hover { background: var(--glass-2); color: var(--txt); }
+#media-modal .mm-sub { margin-top: 8px; font-size: 13px; line-height: 1.5; color: var(--txt-dim); max-width: 430px; }
+#media-modal .mm-body { padding: 16px 22px 18px; overflow: auto; flex: 1 1 auto; }
+#media-modal .mm-rows { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+#media-modal .mm-row { display: grid; grid-template-columns: 64px minmax(0,1fr) auto; align-items: center; column-gap: 12px; padding: 12px 14px; min-height: 56px; }
+#media-modal .mm-row + .mm-row { border-top: 1px solid var(--line); }
+#media-modal .mm-pill { justify-self: start; font-size: 11px; font-weight: 600; letter-spacing: .3px; height: 22px; display: inline-flex; align-items: center; padding: 0 10px; border-radius: 999px; background: var(--panel-3); color: var(--txt-dim); }
+#media-modal .mm-name { font-size: 13.5px; color: var(--txt); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+#media-modal .mm-name.empty { color: var(--txt-faint); }
+#media-modal .mm-state { display: flex; align-items: center; gap: 10px; justify-self: end; }
+#media-modal .mm-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--ok); }
+#media-modal .mm-ok svg { width: 15px; height: 15px; }
+#media-modal .mm-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--line); background: var(--glass-2); flex: 0 0 auto; }
+#media-modal .mm-btn { font: inherit; cursor: pointer; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--txt); transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
+#media-modal .mm-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-ring); }
+#media-modal .mm-btn:active { transform: translateY(1px); }
+#media-modal .mm-primary { height: 34px; padding: 0 16px; font-size: 13px; font-weight: 600; background: var(--accent); color: #08131f; }
+:root[data-theme="light"] #media-modal .mm-primary { color: #fff; }
+#media-modal .mm-primary:disabled { opacity: .38; cursor: default; box-shadow: none; transform: none; }
+#media-modal .mm-find { height: 30px; padding: 0 12px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); }
+:root[data-theme="light"] #media-modal .mm-find { color: #0a5aad; }
+#media-modal .mm-find:hover { background: var(--accent); color: #08131f; }
+:root[data-theme="light"] #media-modal .mm-find:hover { color: #fff; }
+#media-modal .mm-swap { height: 30px; padding: 0 12px; font-size: 12.5px; font-weight: 500; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--txt); }
+#media-modal .mm-swap:hover { border-color: var(--accent); color: var(--accent); }
+#media-modal .mm-ghost { padding: 6px 4px; font-size: 12.5px; color: var(--txt-dim); }
+#media-modal .mm-ghost:hover { color: var(--txt); text-decoration: underline; }
+@media (max-width: 560px) {
+  #media-modal .mm-row { grid-template-columns: 52px minmax(0,1fr); row-gap: 8px; }
+  #media-modal .mm-state { grid-column: 2; justify-self: start; }
+  #media-modal .mm-foot { flex-wrap: wrap; }
+}
+.settings-menu { display: flex; gap: 6px; padding: 8px 16px 0; }
+.settings-tab { background: none; border: none; color: var(--txt-dim); font-weight: 700; font-size: 12.5px; padding: 5px 11px; border-radius: 7px; cursor: pointer; }
+.settings-tab.active { background: var(--accent-soft, rgba(79,157,245,.14)); color: var(--txt); }
+.settings-content { padding: 8px 16px 14px; }
+.sc-hint { font-size: 11.5px; color: var(--txt-faint); margin: 4px 0 8px; }
+.sc-cat { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--txt-faint); margin: 13px 0 3px; }
+.sc-row { display: flex; align-items: center; gap: 12px; padding: 5px 2px; border-bottom: 1px solid var(--line); }
+.sc-label { flex: 1; font-size: 12.5px; color: var(--txt); }
+.sc-key { flex: 0 0 auto; min-width: 96px; text-align: center; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--panel-2); color: var(--txt); cursor: pointer; }
+.sc-key:hover { border-color: var(--accent); }
+.sc-key.capturing { border-color: var(--accent); color: var(--accent); background: var(--accent-soft, rgba(79,157,245,.14)); }
+.sc-foot { margin-top: 14px; display: flex; justify-content: flex-end; }
+.tr-shortcut-code { display: inline-flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; color: var(--txt-dim); }
+.tr-shortcut-code .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; border: 1px solid var(--line-2); }
+.tr-row .tr-index { width: 96px; font-size: 11px; color: var(--txt-dim); font-variant-numeric: tabular-nums; }
+.tr-row textarea { min-height: 46px; }
+.tr-row.new { background: var(--panel-2); }
+.tr-row.new input { border-style: dashed; background: var(--panel); }
+
+/* --------------------------------------------------------------------------
+   10. Gráfico, legenda e relatório
+   -------------------------------------------------------------------------- */
+.chart-toolbar { display: flex; gap: var(--s-5); align-items: center; flex-wrap: wrap; }
+.legend { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-8); font-size: 11.5px; }
+.legend .swatch { width: 11px; height: 11px; border-radius: 2px; }
+
+.stat-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.stat-table td { padding: 4px 8px 4px 0; }
+.stat-bar { height: 7px; border-radius: var(--r-pill); }
+
+details.stat-block { border-top: 1px solid var(--line); padding-top: 9px; margin-top: 9px; }
+details.stat-block > summary { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; cursor: pointer; list-style: none; }
+details.stat-block > summary::-webkit-details-marker { display: none; }
+details.stat-block .chev { transition: transform var(--dur-2) var(--ease); }
+details.stat-block[open] .chev { transform: rotate(90deg); }
+
+/* --------------------------------------------------------------------------
+   11. Estados de tela
+   -------------------------------------------------------------------------- */
+.empty {
+  color: var(--txt-dim); text-align: center;
+  padding: 34px 26px; display: flex; flex-direction: column; align-items: center; gap: var(--s-5);
+}
+.empty b { font-size: 13.5px; color: var(--txt); }
+.empty p { margin: 0; max-width: 340px; font-size: 12px; }
+.empty.error { border: 1px solid var(--danger); border-radius: var(--r-4); }
+.empty.error b { color: var(--danger); }
+
+/* --------------------------------------------------------------------------
+   12. Impressão e exportação
+   A figura é exportada a partir do SVG, não da tela. Estas regras garantem
+   que uma impressão direta do navegador também saia legível.
+   -------------------------------------------------------------------------- */
+@media print {
+  body::before, .rail, .hud, .inspector, .sidebar { display: none !important; }
+  .workspace { position: static; border-radius: 0; }
+  .sheet, .chart-host { box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* --------------------------------------------------------------------------
+   13. Supplementar de casca (alternância de telas, marca e assinatura do trilho)
+   -------------------------------------------------------------------------- */
+.view { display: none; }
+.view.active { display: flex; }
+.rail .brand { display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: var(--s-8); color: var(--txt); }
+.rail .brand .mark { color: var(--accent); display: block; }
+.hud .status { display: none; }
+.hud .status.on { display: inline-flex; }
+
+.canvas-area { overflow: auto; }
+
+/* Seletor de grafia de cifragem (Configurações › Cifragem) */
+.notation-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.notation-opt { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; background: var(--panel-2); }
+.notation-opt.sel { border-color: var(--accent); background: rgba(79,157,245,.07); }
+.notation-opt input { flex: 0 0 auto; margin-top: 4px; }
+.nt-body { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.nt-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.nt-name { font-weight: 700; flex: 0 0 auto; }
+.nt-desc { font-size: 12px; color: var(--txt-dim); }
+.nt-sample { color: var(--txt); }
+.nt-sample .grafia { font-family: Georgia, "Times New Roman", serif; font-size: 1.35rem; color: var(--txt); margin-right: .1em; }
+.nt-sep { color: var(--txt-dim); opacity: .5; margin: 0 .12em; }
+
+.nt-note { color: var(--txt-faint); font-style: italic; }
+
+/* Compasso da partitura clicável (clique = leva a mídia ao início dele) */
+#seg-score svg g.measure { cursor: pointer; }
+
+/* Configurações › Pedal (pedal de transcrição via Web MIDI) */
+.ped-row { display: flex; align-items: center; gap: 10px; }
+.ped-status { font-size: 12px; color: var(--txt-dim); }
+.ped-status.on { color: var(--ok); }
+.ped-opt { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 12.5px; color: var(--txt); }
+.ped-opt input { flex: 0 0 auto; margin-top: 2px; }
+.ped-val { color: var(--txt-dim); font-variant-numeric: tabular-nums; font-weight: 400; }
+.ped-monitor { flex: 1; font-family: var(--font-mono); font-size: 12px; color: var(--txt-dim); background: var(--panel-2); border: 1px solid var(--line-2); border-radius: var(--r-2); padding: 5px 10px; transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
+.ped-monitor.hit { color: var(--accent); border-color: var(--accent); }
+
+/* Aba ② · cabeça clicável do trecho (opção A: a linha toca; ▶ aparece no hover/ativa; tempos numa linha só) */
+.tr-lead { flex: 0 0 150px; display: flex; align-items: center; gap: 8px; padding: 4px 8px; margin: -3px 0; border-radius: 8px; cursor: pointer; transition: background var(--dur-1) var(--ease); }
+.tr-lead:hover { background: var(--panel-2); }
+.tr-lead-ico { flex: 0 0 14px; display: flex; color: var(--accent); opacity: 0; transition: opacity var(--dur-1) var(--ease); }
+.tr-lead-ico svg { width: 14px; height: 14px; display: block; }
+.tr-row:hover .tr-lead-ico, .tr-row.active .tr-lead-ico { opacity: 1; }
+.tr-lead-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tr-num { font-size: 11px; color: var(--txt-dim); display: flex; align-items: center; gap: 4px; }
+.tr-lock { display: inline-flex; opacity: .7; }
+.tr-lock svg { width: 11px; height: 11px; }
+.tr-range { display: flex; align-items: center; gap: 5px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.tr-start { color: var(--accent); font-weight: 600; text-decoration: none; }
+.tr-start:hover { text-decoration: underline; }
+.tr-sep { color: var(--txt-faint); }
+.tr-end { color: var(--txt-dim); }
+
+/* Onda do trecho na aba ②: ao lado (fora) da mini-toolbar, ocupando o espaço livre à direita. Clicável para buscar. */
+#hud-wave { display: none; flex: 1 1 0; min-width: 0; height: 46px; border-radius: var(--r-4); background: var(--panel-2); border: 1px solid var(--line-2); cursor: crosshair; }

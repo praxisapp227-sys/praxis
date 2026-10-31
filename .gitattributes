@@ -1,0 +1,16 @@
+* text=auto
+*.bat     text eol=crlf
+*.command text eol=lf
+*.sh      text eol=lf
+*.py      text eol=lf
+
+*.wasm  binary
+*.onnx  binary
+*.otf   binary
+*.wav   binary
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+
+# bibliotecas de terceiros: byte a byte como vieram (sem conversão de quebra de linha)
+vendor/** -text

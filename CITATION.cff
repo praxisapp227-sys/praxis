@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "Se o Praxis ajudar na sua pesquisa, uma citação é bem-vinda (não obrigatória)."
+title: "Praxis: ferramenta local para análise de sessões de prática musical"
+type: software
+authors:
+  - name: "Praxis Project"
+license: 0BSD
+repository-code: "https://github.com/praxisapp227-sys/praxis"
+version: "1.0.0"
+keywords:
+  - prática musical
+  - análise de comportamento
+  - gráfico de comportamento de prática
+  - análise multidimensional
+  - transcrição
+  - music practice
+abstract: >-
+  Ferramenta local e gratuita para analisar sessões de prática musical a partir de vídeo e áudio:
+  segmentação e codificação de comportamentos, transcrição da fala com Whisper (local), Gráfico de
+  Comportamento de Prática (GCP) e análise multidimensional (radar, linhas em degraus e tipos de prática).

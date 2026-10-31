@@ -1,0 +1,34 @@
+Dimensão;Início;Fim;Duração;Escore;Descrição
+Desafiabilidade;00:07.8;00:29.0;00:21.2;1;Completamente confortável
+Desafiabilidade;00:29.0;00:53.4;00:24.5;2;Desafio leve
+Desafiabilidade;00:53.4;01:18.2;00:24.8;3;Desafio ótimo
+Desafiabilidade;01:18.2;01:49.6;00:31.4;2;Desafio leve
+Desafiabilidade;01:49.6;01:55.3;00:05.7;1;Completamente confortável
+Desafiabilidade;01:55.3;01:55.9;00:00.6;1;Completamente confortável
+Desafiabilidade;01:55.9;02:54.7;00:58.8;2;Desafio leve
+Desafiabilidade;02:54.7;03:02.3;00:07.6;3;Desafio ótimo
+Desafiabilidade;03:02.3;03:12.7;00:10.4;2;Desafio leve
+Desafiabilidade;03:12.7;03:24.4;00:11.7;1;Completamente confortável
+Desafiabilidade;03:24.4;03:50.3;00:25.9;2;Desafio leve
+Desafiabilidade;03:50.3;04:18.9;00:28.7;2;Desafio leve
+Desafiabilidade;04:18.9;04:27.5;00:08.5;1;Completamente confortável
+Reatividade;00:08.1;00:29.3;00:21.2;5;Completamente proativo
+Reatividade;00:29.3;00:38.0;00:08.7;4;Majoritariamente proativo
+Reatividade;00:38.0;01:12.4;00:34.4;5;Completamente proativo
+Reatividade;01:12.4;01:16.0;00:03.6;1;Completamente reativo
+Reatividade;01:16.0;02:02.9;00:46.9;3;Neutro
+Reatividade;02:02.9;03:13.0;01:10.2;2;Majoritariamente reativo
+Reatividade;03:13.0;04:00.0;00:46.9;4;Majoritariamente proativo
+Reatividade;04:00.0;04:27.4;00:27.4;3;Neutro
+Resolutividade;00:07.5;00:19.0;00:11.6;4;Majoritariamente criativo
+Resolutividade;00:19.0;00:40.5;00:21.5;3;Misto
+Resolutividade;00:40.5;00:49.0;00:08.5;3;Misto
+Resolutividade;00:49.0;01:09.9;00:20.9;2;Majoritariamente resolutivo
+Resolutividade;01:09.9;01:17.5;00:07.5;3;Misto
+Resolutividade;01:17.5;01:50.1;00:32.6;4;Majoritariamente criativo
+Resolutividade;01:50.1;01:57.1;00:07.0;3;Misto
+Resolutividade;01:57.1;03:04.6;01:07.5;2;Majoritariamente resolutivo
+Resolutividade;03:04.6;03:19.7;00:15.1;3;Misto
+Resolutividade;03:19.7;03:23.8;00:04.1;3;Misto
+Resolutividade;03:23.8;04:14.2;00:50.4;4;Majoritariamente criativo
+Resolutividade;04:14.2;04:27.4;00:13.1;5;Completamente criativo
